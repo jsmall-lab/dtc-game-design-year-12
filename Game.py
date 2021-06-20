@@ -12,14 +12,22 @@ class Game(arcade.Window):
         super().__init__(WIDTH, HEIGHT, TITLE)
         arcade.set_background_color(arcade.color.DARK_GREEN)
         self.player = None
+        self.wall_list: arcade.SpriteList
+    
+    def load_map(self):
+        platforms_layername = "Tile layer 1"
+        level1 = arcade.tilemap.read_tmx("assets/maps/level1_map.tmx")
+        self.wall_list = arcade.tilemap.process_layer(map_object= level1, layer_name = platforms_layername, use_spatial_hash = True, scaling = 0.5)
 
     def setup(self):
-        self.player = arcade.Sprite('sprites_for_game/character.png-1.png.png', 2)
+        self.player = arcade.Sprite('assets/sprites_for_game/character.png-1.png.png', 2)
+        self.load_map()
         self.player.center_x = 500
         self.player.center_y = 500
     
     def on_draw(self):
         arcade.start_render()
+        self.wall_list.draw()
         self.player.draw()
     
     def update(self, delta_time):
