@@ -15,7 +15,7 @@ class Game(arcade.Window):
         self.wall_list: arcade.SpriteList
     
     def load_map(self):
-        platforms_layername = "Tile layer 1"
+        platforms_layername = "Tile Layer 1"
         level1 = arcade.tilemap.read_tmx("assets/maps/level1_map.tmx")
         self.wall_list = arcade.tilemap.process_layer(map_object= level1, layer_name = platforms_layername, use_spatial_hash = True, scaling = 0.5)
 
