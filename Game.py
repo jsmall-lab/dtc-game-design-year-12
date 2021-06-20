@@ -14,7 +14,7 @@ class Game(arcade.Window):
         self.player = None
 
     def setup(self):
-        self.player = arcade.Sprite('sprites_for_game/character.png-1.png.png', 2)
+        self.player = arcade.Sprite('assets/sprites_for_game/character.png-1.png.png', 2)
         self.player.center_x = 500
         self.player.center_y = 500
     
