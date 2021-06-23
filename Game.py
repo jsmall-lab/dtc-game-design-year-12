@@ -32,6 +32,7 @@ class Game(arcade.Window):
     
     def update(self, delta_time):
         self.player.update()
+        print(self.player.center_x, self.player.center_y)
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.LEFT:
