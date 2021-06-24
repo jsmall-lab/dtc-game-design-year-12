@@ -14,7 +14,7 @@ class Game(arcade.Window):
         self.player = None
         self.wall_list: arcade.SpriteList
         self.physics_engine = None
-        self.view
+      
     def load_map(self):
         platforms_layername = "Tile Layer 1"
         level1 = arcade.tilemap.read_tmx("assets/maps/level1_map.tmx")
