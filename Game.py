@@ -1,16 +1,11 @@
 import arcade
-# Window, Width, Height, an Title
+
 WIDTH = 1900
 HEIGHT = 1000
 TITLE = 'The Game'
-#Movement speed and jump speed for user.main character
 MOVEMENT_SPEED = 5
 JUMP_SPEED = 10
-
-#this is distance between main character and window boarder
 VIEWPORT_MARGIN = 400
-
-#speed of bullet fied from gun and the scailing for bullet sprite
 BULLET_SPEED = 10
 BULLET_SCAILING = 0.08
 
@@ -58,7 +53,12 @@ class Game(arcade.Window):
         self.player.update()
         self.physics_engine.update()
         changed = False
+
         self.bullet_list.update()
+        for bullet in self.bullet_list:
+            touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
+            for coin in touching:
+                bullet.kill()
 
         # scrolling for main character
         left_boundary = self.view_left + VIEWPORT_MARGIN
@@ -93,7 +93,7 @@ class Game(arcade.Window):
         if self.view_left < 0:
             self.view_left = 0
         
-        if self.player.center_y < - 500:
+        if self.player.center_y < - 1100:
             self.setup()
             self.lives -= 1
         # character live counter
