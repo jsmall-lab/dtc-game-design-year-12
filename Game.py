@@ -13,7 +13,7 @@ RIGHT_FACING = 0
 LEFT_FACING = 1
 
 PLAYER_FRAMES = 3
-PLAYER_FRAMES_PER_TEXTURE = 4
+PLAYER_FRAMES_PER_TEXTURE = 5
 
 BULLET_SPEED = 25
 BULLET_SCAILING = 0.08
@@ -37,12 +37,12 @@ class PlayerCharacter (arcade.Sprite):
 
         self.idle = False
 
-        self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character_idle-1.png.png", 0.7)
+        self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character_idle-1.png.png")
 
 
         self.walk_textures: typing.List[typing.List[arcade.texture]] = []
         for i in range(PLAYER_FRAMES):
-            texture = load_texture_pair(f"./assets/sprites_for_game/main character/main_character{i}.png", 0.7)
+            texture = load_texture_pair(f"./assets/sprites_for_game/main character/main_character{i}.png")
             self.walk_textures.append(texture)
         
         self.texture = self.idle_texture_pair[0]
