@@ -108,7 +108,7 @@ class Game(arcade.Window):
         arcade.start_render()
         self.wall_list.draw()
         self.player.draw()
-        arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -200) , arcade.color.BLACK, 70)
+        arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
         self.bullet_list.draw()
 
     def update(self, delta_time):
@@ -179,12 +179,12 @@ class Game(arcade.Window):
             if self.player.character_face_direction == LEFT_FACING:
                 bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
                 bullet.change_x = -BULLET_SPEED
-                bullet.center_x = self.player.center_x - 40
+                bullet.center_x = self.player.center_x - 45
                 bullet.center_y = self.player.center_y
             else:
                 bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING)
                 bullet.change_x = BULLET_SPEED
-                bullet.center_x = self.player.center_x + 40
+                bullet.center_x = self.player.center_x + 45
                 bullet.center_y = self.player.center_y
             self.bullet_list.append(bullet)
 
