@@ -1,8 +1,8 @@
 import arcade
 import typing
 
-WIDTH = 1900
-HEIGHT = 1000
+WIDTH = 1200
+HEIGHT = 700
 TITLE = 'The Game'
 
 PLAYER_MOVEMENT_SPEED = 5
@@ -13,7 +13,7 @@ RIGHT_FACING = 0
 LEFT_FACING = 1
 
 PLAYER_FRAMES = 3
-PLAYER_FRAMES_PER_TEXTURE = 5
+PLAYER_FRAMES_PER_TEXTURE = 6
 
 BULLET_SPEED = 25
 BULLET_SCAILING = 0.08
@@ -82,7 +82,7 @@ class Game(arcade.Window):
         self.view_left = 0
         self.lives = 3
         self.bullet_list = None
-    
+        
     def load_map(self):
         platforms_layername = "Tile Layer 1"
         level1 = arcade.tilemap.read_tmx("assets/maps/level1_map.tmx")
@@ -179,7 +179,10 @@ class Game(arcade.Window):
             bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING)
             bullet.center_x = self.player.center_x + 40
             bullet.center_y = self.player.center_y
-            bullet.change_x = BULLET_SPEED
+            if self.player.change_x < 0:                
+                bullet.change_x = -BULLET_SPEED
+            else:
+                bullet.change_x = BULLET_SPEED
             self.bullet_list.append(bullet)
 
     def on_key_release(self, key, modifiers):
