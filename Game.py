@@ -1,8 +1,8 @@
 import arcade
 import typing
 
-WIDTH = 1200
-HEIGHT = 800
+WIDTH = 1900
+HEIGHT = 1000
 TITLE = 'The Game'
 
 PLAYER_MOVEMENT_SPEED = 5
