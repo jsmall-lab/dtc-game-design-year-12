@@ -2,7 +2,7 @@ import arcade
 import typing
 
 WIDTH = 1200
-HEIGHT = 700
+HEIGHT = 800
 TITLE = 'The Game'
 
 PLAYER_MOVEMENT_SPEED = 5
@@ -108,7 +108,7 @@ class Game(arcade.Window):
         arcade.start_render()
         self.wall_list.draw()
         self.player.draw()
-        arcade.draw_text(str(self.lives), 100 , 900 , arcade.color.BLACK, 70)
+        arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -200) , arcade.color.BLACK, 70)
         self.bullet_list.draw()
 
     def update(self, delta_time):
@@ -176,13 +176,16 @@ class Game(arcade.Window):
             self.player.change_y = -PLAYER_MOVEMENT_SPEED
         # first bullet when space bar is pressed 
         if key == arcade.key.SPACE:   
-            bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING)
-            bullet.center_x = self.player.center_x + 40
-            bullet.center_y = self.player.center_y
-            if self.player.change_x < 0:                
+            if self.player.character_face_direction == LEFT_FACING:
+                bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
                 bullet.change_x = -BULLET_SPEED
+                bullet.center_x = self.player.center_x - 40
+                bullet.center_y = self.player.center_y
             else:
+                bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING)
                 bullet.change_x = BULLET_SPEED
+                bullet.center_x = self.player.center_x + 40
+                bullet.center_y = self.player.center_y
             self.bullet_list.append(bullet)
 
     def on_key_release(self, key, modifiers):
