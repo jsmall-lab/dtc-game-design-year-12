@@ -122,17 +122,17 @@ class Game(arcade.Window):
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
                 bullet.kill()
-#TODO kill bullets off the edge of the screen  
+  
             if bullet.center_x > self.player.center_x + WIDTH:
                 bullet.kill()
-                print("WE DID IT")         
+                         
 
         # scrolling for main character
         left_boundary = self.view_left + VIEWPORT_MARGIN
         if self.player.left < left_boundary:
             self.view_left -= left_boundary - self.player.left
             changed = True
-       
+            
         right_boundary = self.view_left + WIDTH - VIEWPORT_MARGIN
         if self.player.right > right_boundary:
             self.view_left += self.player.right - right_boundary
@@ -150,7 +150,8 @@ class Game(arcade.Window):
 
         if self.view_left < 0:
             self.view_left = 0
-            
+        
+         
         if changed:
             arcade.set_viewport(self.view_left,
                                 WIDTH + self.view_left,
@@ -159,6 +160,7 @@ class Game(arcade.Window):
 
         if self.view_left < 0:
             self.view_left = 0
+        
         
         if self.player.center_y < - 1100:
             self.setup()
