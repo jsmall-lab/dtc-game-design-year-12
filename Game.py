@@ -1,8 +1,8 @@
 import arcade
 import typing
 
-WIDTH = 1900
-HEIGHT = 1000
+WIDTH = 1200
+HEIGHT = 800
 TITLE = 'The Game'
 
 PLAYER_MOVEMENT_SPEED = 5
@@ -122,7 +122,10 @@ class Game(arcade.Window):
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
                 bullet.kill()
-#TODO kill bullets off the edge of the screen             
+#TODO kill bullets off the edge of the screen  
+            if bullet.center_x > self.player.center_x + WIDTH:
+                bullet.kill()
+                print("WE DID IT")         
 
         # scrolling for main character
         left_boundary = self.view_left + VIEWPORT_MARGIN
