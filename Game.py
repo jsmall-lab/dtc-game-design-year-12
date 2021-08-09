@@ -18,6 +18,7 @@ PLAYER_FRAMES_PER_TEXTURE = 6
 BULLET_SPEED = 25
 BULLET_SCAILING = 0.08
 
+TOTAL_LEVELS = 2
 def load_texture_pair(filename: str) -> typing.List[arcade.Texture]:
     return [
         arcade.load_texture(filename),
@@ -83,16 +84,24 @@ class Game(arcade.View):
         self.lives = 3
         self.bullet_list = None
         self.marker_x = None
-        
+        self.current_level =1
+
     def load_map(self):
         platforms_layername = "walls"
-        level2_marker_layername = "level2_marker"
-        level1 = arcade.tilemap.read_tmx("assets/maps/level1_map.tmx")
-        self.wall_list = arcade.tilemap.process_layer(map_object= level1, layer_name = platforms_layername, use_spatial_hash = True, scaling = 0.5)
-        marker_list = arcade.tilemap.process_layer(map_object= level1, layer_name = level2_marker_layername, use_spatial_hash = True, scaling = 0.5)
+        next_level_marker_layername = "next_level_marker"
+        level = arcade.tilemap.read_tmx(f"assets/maps/level{self.current_level}_map.tmx")
+        self.wall_list = arcade.tilemap.process_layer(map_object= level, layer_name = platforms_layername, use_spatial_hash = True, scaling = 0.5)
+        marker_list = arcade.tilemap.process_layer(map_object= level, layer_name = next_level_marker_layername, use_spatial_hash = True, scaling = 0.5)
         marker = marker_list[0]
         self.wall_list.append(marker)
         self.marker_x = marker.center_x
+
+    def progress_level(self):
+        if self.current_level == TOTAL_LEVELS:
+            raise NotImplementedError()
+        else:
+            self.current_level += 1
+            self.setup()
     def setup(self):
         # main player
         self.player = PlayerCharacter()
@@ -174,7 +183,7 @@ class Game(arcade.View):
             exit()
         
         if self.player.center_x > self.marker_x:
-            raise NotImplemented()
+            self.progress_level()
 
     def on_key_press(self, key, modifiers):
         # user input
