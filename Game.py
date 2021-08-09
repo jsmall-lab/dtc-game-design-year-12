@@ -24,7 +24,7 @@ def load_texture_pair(filename: str) -> typing.List[arcade.Texture]:
         arcade.load_texture(filename, flipped_horizontally=True)
     ]
 
-class PlayerCharacter (arcade.Sprite):
+class PlayerCharacter(arcade.Sprite):
     def __init__(self):
         super().__init__()
         self.change_x = 0
@@ -71,9 +71,9 @@ class PlayerCharacter (arcade.Sprite):
             self.texture = self.walk_textures[self.cur_texture][self.character_face_direction]
 
 
-class Game(arcade.Window):
+class Game(arcade.View):
     def __init__(self):
-        super().__init__(WIDTH, HEIGHT, TITLE)
+        super().__init__()
         arcade.set_background_color(arcade.color.AIR_FORCE_BLUE)
         self.player = None
         self.wall_list: arcade.SpriteList
@@ -206,6 +206,8 @@ class Game(arcade.Window):
    
 
 
+window = arcade.Window(WIDTH, HEIGHT, TITLE)
 game = Game()
 game.setup()
+window.show_view(game)
 arcade.run()
