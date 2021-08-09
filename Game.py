@@ -204,10 +204,13 @@ class Game(arcade.View):
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player.change_x = 0
    
+class GameWindow(arcade.Window):
+    def __init__(self):
+        super().__init__(width = WIDTH, height = HEIGHT, title = TITLE)
+        self.game_view = Game()
+        self.game_view.setup()
+        self.show_view(self.game_view)
 
 
-window = arcade.Window(WIDTH, HEIGHT, TITLE)
-game = Game()
-game.setup()
-window.show_view(game)
+window = GameWindow()
 arcade.run()
