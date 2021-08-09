@@ -40,7 +40,7 @@ class PlayerCharacter (arcade.Sprite):
         self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character_idle-1.png.png")
 
 
-        self.walk_textures: typing.List[typing.List[arcade.texture]] = []
+        self.walk_textures: typing.List[typing.List[arcade.Texture]] = []
         for i in range(PLAYER_FRAMES):
             texture = load_texture_pair(f"./assets/sprites_for_game/main character/main_character{i}.png")
             self.walk_textures.append(texture)
@@ -82,13 +82,17 @@ class Game(arcade.Window):
         self.view_left = 0
         self.lives = 3
         self.bullet_list = None
+        self.marker_x = None
         
     def load_map(self):
-        platforms_layername = "Tile Layer 1"
+        platforms_layername = "walls"
+        level2_marker_layername = "level2_marker"
         level1 = arcade.tilemap.read_tmx("assets/maps/level1_map.tmx")
         self.wall_list = arcade.tilemap.process_layer(map_object= level1, layer_name = platforms_layername, use_spatial_hash = True, scaling = 0.5)
-
-
+        marker_list = arcade.tilemap.process_layer(map_object= level1, layer_name = level2_marker_layername, use_spatial_hash = True, scaling = 0.5)
+        marker = marker_list[0]
+        self.wall_list.append(marker)
+        self.marker_x = marker.center_x
     def setup(self):
         # main player
         self.player = PlayerCharacter()
@@ -168,6 +172,9 @@ class Game(arcade.Window):
         # character live counter
         if self.lives == 0:
             exit()
+        
+        if self.player.center_x > self.marker_x:
+            raise NotImplemented()
 
     def on_key_press(self, key, modifiers):
         # user input
