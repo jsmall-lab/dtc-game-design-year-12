@@ -1,5 +1,6 @@
 import arcade
 import typing
+import os
 
 WIDTH = 1200
 HEIGHT = 800
@@ -36,32 +37,44 @@ class PlayerCharacter(arcade.Sprite):
         self.virtual_frames = 0
         # 0 - 59
 
+        self.jump = False
+
+        self.jump_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character_jump.png")
+
         self.idle = False
 
         self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character_idle-1.png.png")
 
-
-        self.walk_textures: typing.List[typing.List[arcade.Texture]] = []
-        for i in range(PLAYER_FRAMES):
-            texture = load_texture_pair(f"./assets/sprites_for_game/main character/main_character{i}.png")
-            self.walk_textures.append(texture)
         
+        self.walk_textures: typing.List[typing.List[arcade.Texture]] = []
+
+        if self.jump == False:
+            for i in range(PLAYER_FRAMES):
+                texture = load_texture_pair(f"./assets/sprites_for_game/main_character/main_character{i}.png")
+                self.walk_textures.append(texture)
+                
         self.texture = self.idle_texture_pair[0]
 
 
     def update_animation(self, delta_time:float = 1/60):
+       
         if self.change_x < 0 and self.character_face_direction == RIGHT_FACING:
             self.character_face_direction = LEFT_FACING
         if self.change_x > 0 and self.character_face_direction == LEFT_FACING:
             self.character_face_direction = RIGHT_FACING
+            
         
-
         if self.change_x == 0:
             self.texture = self.idle_texture_pair[self.character_face_direction]
             self.idle = True
             return
 
+        if self.change_y > 0 or self.change_y < 0:
+            self.texture = self.jump_texture_pair[self.character_face_direction]
+            self.jump = True
+            return
         
+            
         self.idle = False
         self.virtual_frames += 1
         if self.virtual_frames > PLAYER_FRAMES*PLAYER_FRAMES_PER_TEXTURE -1:
@@ -102,6 +115,7 @@ class Game(arcade.View):
         else:
             self.current_level += 1
             self.setup()
+
     def setup(self):
         # main player
         self.player = PlayerCharacter()
