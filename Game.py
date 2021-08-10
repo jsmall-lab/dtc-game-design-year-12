@@ -19,7 +19,8 @@ PLAYER_FRAMES_PER_TEXTURE = 6
 BULLET_SPEED = 25
 BULLET_SCAILING = 0.08
 
-TOTAL_LEVELS = 2
+TOTAL_LEVELS = 3
+
 def load_texture_pair(filename: str) -> typing.List[arcade.Texture]:
     return [
         arcade.load_texture(filename),
@@ -64,12 +65,12 @@ class PlayerCharacter(arcade.Sprite):
             self.character_face_direction = RIGHT_FACING
             
         
-        if self.change_x == 0:
+        if self.change_x == 0 or self.change_y < 0:
             self.texture = self.idle_texture_pair[self.character_face_direction]
             self.idle = True
             return
 
-        if self.change_y > 0 or self.change_y < 0:
+        if self.change_y > 0:
             self.texture = self.jump_texture_pair[self.character_face_direction]
             self.jump = True
             return
