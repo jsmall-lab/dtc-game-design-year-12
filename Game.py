@@ -38,6 +38,8 @@ class PlayerCharacter(arcade.Sprite):
         self.virtual_frames = 0
         # 0 - 59
 
+        self.touching_ramp = False
+
         self.jump = False
 
         self.jump_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character_jump.png")
@@ -199,6 +201,8 @@ class Game(arcade.View):
         
         if self.player.center_x > self.marker_x:
             self.progress_level()
+
+        
 
     def on_key_press(self, key, modifiers):
         # user input
