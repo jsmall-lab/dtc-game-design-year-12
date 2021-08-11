@@ -1,7 +1,7 @@
 import arcade
 import typing
-import os
-
+from views.start_view import StartView
+         
 WIDTH = 1200
 HEIGHT = 800
 TITLE = 'The Game'
@@ -77,7 +77,8 @@ class PlayerCharacter(arcade.Sprite):
             self.jump = True
             return
         
-            
+        self.jump = False
+
         self.idle = False
         self.virtual_frames += 1
         if self.virtual_frames > PLAYER_FRAMES*PLAYER_FRAMES_PER_TEXTURE -1:
@@ -215,18 +216,19 @@ class Game(arcade.View):
         if key == arcade.key.DOWN:
             self.player.change_y = -PLAYER_MOVEMENT_SPEED
         # first bullet when space bar is pressed 
-        if key == arcade.key.SPACE:   
-            if self.player.character_face_direction == LEFT_FACING:
-                bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
-                bullet.change_x = -BULLET_SPEED
-                bullet.center_x = self.player.center_x - 45
-                bullet.center_y = self.player.center_y
-            else:
-                bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING)
-                bullet.change_x = BULLET_SPEED
-                bullet.center_x = self.player.center_x + 45
-                bullet.center_y = self.player.center_y
-            self.bullet_list.append(bullet)
+        if self.player.jump == False: 
+            if key == arcade.key.SPACE:   
+                if self.player.character_face_direction == LEFT_FACING:
+                    bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
+                    bullet.change_x = -BULLET_SPEED
+                    bullet.center_x = self.player.center_x - 45
+                    bullet.center_y = self.player.center_y
+                else:
+                    bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING)
+                    bullet.change_x = BULLET_SPEED
+                    bullet.center_x = self.player.center_x + 45
+                    bullet.center_y = self.player.center_y
+                self.bullet_list.append(bullet)
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
