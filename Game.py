@@ -121,6 +121,8 @@ class Game(arcade.View):
             self.setup()
 
     def setup(self):
+        if self.current_level == 1:
+            
         # main player
         self.player = PlayerCharacter()
         self.player.center_x = 50

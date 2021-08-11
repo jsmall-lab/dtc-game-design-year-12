@@ -18,5 +18,4 @@ class StartView(arcade.View):
         , arcade.color.WHITE, font_size=20, anchor_x="center")
         arcade.finish_render()
 
-view = StartView()
-arcade.run()
+
