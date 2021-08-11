@@ -1,6 +1,6 @@
 import arcade
 import typing
-from views.start_view import StartView
+
          
 WIDTH = 1200
 HEIGHT = 800
@@ -204,6 +204,7 @@ class Game(arcade.View):
         
         if self.player.center_x > self.marker_x:
             self.progress_level()
+            
 
         
 
@@ -236,12 +237,32 @@ class Game(arcade.View):
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player.change_x = 0
    
+class StartView(arcade.View):
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
+        arcade.set_viewport(0, WIDTH -1, 0, HEIGHT -1)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Start Screen", WIDTH / 2, HEIGHT / 2, arcade.color.BLACK, font_size=50, anchor_x="center")
+        
+        arcade.draw_text("Click to Start", WIDTH / 2, HEIGHT / 2 - 75, arcade.color.BLACK, font_size=20, anchor_x="center")
+        arcade.finish_render()
+    
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        """ If the user presses the mouse button, start the game. """
+        game_view = Game()
+        game_view.setup()
+        self.window.show_view(game_view)
+
+
+        
 class GameWindow(arcade.Window):
     def __init__(self):
         super().__init__(width = WIDTH, height = HEIGHT, title = TITLE)
-        self.game_view = Game()
-        self.game_view.setup()
-        self.show_view(self.game_view)
+        self.start_view = StartView()
+        self.show_view(self.start_view)
 
 
 window = GameWindow()
