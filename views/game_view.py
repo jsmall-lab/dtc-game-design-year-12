@@ -3,6 +3,7 @@ import typing
 
 
 
+
 WIDTH = 1200
 HEIGHT = 800
 TITLE = 'The Game'
@@ -89,12 +90,72 @@ class PlayerCharacter(arcade.Sprite):
             self.cur_texture = self.virtual_frames // PLAYER_FRAMES_PER_TEXTURE
             self.texture = self.walk_textures[self.cur_texture][self.character_face_direction]
 
+class Enemy1(arcade.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.change_x = 0
+        self.character_face_direction = RIGHT_FACING
 
+        self.cur_texture = 0
+        # 0 - PLAYER_FRAMES
+        self.virtual_frames = 0
+        # 0 - 59
+
+        self.touching_ramp = False
+
+        #self.jump = False
+
+        #self.jump_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_jump.png")
+
+        self.idle = False
+
+        self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_idle-1.png.png")
+
+        
+        self.walk_textures: typing.List[typing.List[arcade.Texture]] = []
+
+        #if self.jump == False:
+        for i in range(PLAYER_FRAMES):
+            texture = load_texture_pair(f"./assets/sprites_for_game/enemies/enemy1/enemy{i}.png")
+            self.walk_textures.append(texture)
+            
+        self.texture = self.idle_texture_pair[0]
+
+
+    def update_animation(self, delta_time:float = 1/60):
+       
+        if self.change_x < 0 and self.character_face_direction == RIGHT_FACING:
+            self.character_face_direction = LEFT_FACING
+        if self.change_x > 0 and self.character_face_direction == LEFT_FACING:
+            self.character_face_direction = RIGHT_FACING
+            
+        
+        if self.change_x == 0 or self.change_y < 0:
+            self.texture = self.idle_texture_pair[self.character_face_direction]
+            self.idle = True
+            return
+
+       # if self.change_y > 0:
+            #self.texture = self.jump_texture_pair[self.character_face_direction]
+           # self.jump = True
+           # return
+        
+        self.jump = False
+
+        self.idle = False
+        self.virtual_frames += 1
+        if self.virtual_frames > PLAYER_FRAMES*PLAYER_FRAMES_PER_TEXTURE -1:
+            self.virtual_frames = 0
+            self.cur_texture = 0
+        if (self.virtual_frames + 1) % PLAYER_FRAMES_PER_TEXTURE == 0:
+            self.cur_texture = self.virtual_frames // PLAYER_FRAMES_PER_TEXTURE
+            self.texture = self.walk_textures[self.cur_texture][self.character_face_direction]
 class GameView(arcade.View):
     def __init__(self):
         super().__init__()
         arcade.set_background_color(arcade.color.AIR_FORCE_BLUE)
         self.player = None
+        self.enemy1 = None
         self.wall_list: arcade.SpriteList
         self.physics_engine = None
         self.view_bottom = 0
@@ -102,7 +163,7 @@ class GameView(arcade.View):
         self.lives = 3
         self.bullet_list = None
         self.marker_x = None
-        self.current_level = 3
+        self.current_level = 1
 
     def load_map(self):
         platforms_layername = "walls"
@@ -133,6 +194,9 @@ class GameView(arcade.View):
         self.player.center_y = 500
         self.view_left = 0
         self.view_bottom = 0
+        self.enemy1 = Enemy1()
+        self.enemy1.center_x = 200
+        self.enemy1.center_y = 500
          # bullet sprite
         self.bullet_list = arcade.SpriteList()
 
@@ -143,6 +207,7 @@ class GameView(arcade.View):
         arcade.start_render()
         self.wall_list.draw()
         self.player.draw()
+        self.enemy1.draw()
         arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
         self.bullet_list.draw()
 
@@ -154,6 +219,10 @@ class GameView(arcade.View):
         self.player.update_animation()
         self.physics_engine.update()
         changed = False
+
+        self.enemy1.center_x = arcade.utils.lerp(self.enemy1.center_x, self.player.center_x, 0.005)
+        self.enemy1.center_y = arcade.utils.lerp(self.enemy1.center_y, self.player.center_y, 0.005)
+        self.enemy1.update()
 
         self.bullet_list.update()
         for bullet in self.bullet_list:
