@@ -102,7 +102,7 @@ class GameView(arcade.View):
         self.lives = 3
         self.bullet_list = None
         self.marker_x = None
-        self.current_level =1
+        self.current_level = 3
 
     def load_map(self):
         platforms_layername = "walls"
@@ -116,10 +116,13 @@ class GameView(arcade.View):
 
     def progress_level(self):
         if self.current_level == TOTAL_LEVELS:
-            raise NotImplementedError()
+            self.window.show_view(self.window.game_won)
+            self.current_level = 1
         else:
+            self.window.show_view(self.window.level_won)
             self.current_level += 1
             self.setup()
+  
 
     def setup(self):
         
@@ -198,9 +201,10 @@ class GameView(arcade.View):
         
         
         if self.player.center_y < - 1100:
+            self.death()
             self.setup()
             self.lives -= 1
-            self.death()
+           
                 # character live counter
         if self.lives == 0:
             exit()
@@ -208,7 +212,8 @@ class GameView(arcade.View):
         if self.player.center_x > self.marker_x:
             self.progress_level()
             
-
+   
+            
         
 
     def on_key_press(self, key, modifiers):
