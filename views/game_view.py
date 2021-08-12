@@ -230,12 +230,12 @@ class GameView(arcade.View):
         if self.player.jump == False: 
             if key == arcade.key.SPACE:   
                 if self.player.character_face_direction == LEFT_FACING:
-                    bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
+                    bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
                     bullet.change_x = -BULLET_SPEED
                     bullet.center_x = self.player.center_x - 45
                     bullet.center_y = self.player.center_y
                 else:
-                    bullet = arcade.Sprite('assets/sprites_for_game/Bullet-1.png.png', BULLET_SCAILING)
+                    bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING)
                     bullet.change_x = BULLET_SPEED
                     bullet.center_x = self.player.center_x + 45
                     bullet.center_y = self.player.center_y
