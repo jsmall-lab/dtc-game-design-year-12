@@ -1,7 +1,8 @@
 import arcade
 import typing
 
-         
+
+
 WIDTH = 1200
 HEIGHT = 800
 TITLE = 'The Game'
@@ -135,14 +136,13 @@ class GameView(arcade.View):
         self.load_map()
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list)
         
-
-
     def on_draw(self):
         arcade.start_render()
         self.wall_list.draw()
         self.player.draw()
         arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
         self.bullet_list.draw()
+
     def death(self):
         self.window.show_view(self.window.death_view)
 
@@ -197,11 +197,13 @@ class GameView(arcade.View):
             self.view_left = 0
         
         
-        if self.player.center_y <= - 1100:
-            if self.lives > 0:
-                self.lives -= 1
-            if self.lives < 1:
-                self.death
+        if self.player.center_y < - 1100:
+            self.setup()
+            self.lives -= 1
+            self.death()
+                # character live counter
+        if self.lives == 0:
+            exit()
         
         if self.player.center_x > self.marker_x:
             self.progress_level()
@@ -238,52 +240,8 @@ class GameView(arcade.View):
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player.change_x = 0
    
-class StartView(arcade.View):
 
-    def on_show(self):
-        arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
-        arcade.set_viewport(0, WIDTH -1, 0, HEIGHT -1)
-
-    def on_draw(self):
-        arcade.start_render()
-        arcade.draw_text("Start Screen", WIDTH / 2, HEIGHT / 2, arcade.color.BLACK, font_size=50, anchor_x="center")
-        
-        arcade.draw_text("Click to Start", WIDTH / 2, HEIGHT / 2 - 75, arcade.color.BLACK, font_size=20, anchor_x="center")
-        arcade.finish_render()
-    
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        """ If the user presses the mouse button, start the game. """
-        game_view = self.window.game_view
-        game_view.setup()
-        self.window.show_view(game_view)
-        
-
-class DeathView(arcade.View):
-    def on_show(self):
-        arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
-        arcade.set_viewport(0, WIDTH -1, 0, HEIGHT -1)
-
-    def on_draw(self):
-        arcade.start_render()
-        arcade.draw_text("You Have Died", WIDTH / 2, HEIGHT / 2, arcade.color.BLACK, font_size=50, anchor_x="center")
-        
-        arcade.draw_text("Click to Restart Map", WIDTH / 2, HEIGHT / 2 - 75, arcade.color.BLACK, font_size=20, anchor_x="center")
-        arcade.finish_render()
-
-    def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
-           game_view = self.window.game_view
-           self.window.show_view(game_view)
-           game_view.setup()
-
-class GameWindow(arcade.Window):
-    def __init__(self, width: int, height: int, title:str):
-        super().__init__(width = width, height = height, title = title)
-        self.game_view = GameView()
-        start_view = StartView()
-        self.death_view= DeathView()
-        self.show_view(start_view)
         
 
 
-window = GameWindow(WIDTH, HEIGHT, TITLE)
-arcade.run()
+
