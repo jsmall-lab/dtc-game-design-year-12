@@ -4,6 +4,8 @@ import typing
 
 
 
+
+
 WIDTH = 1200
 HEIGHT = 800
 TITLE = 'The Game'
@@ -18,11 +20,11 @@ LEFT_FACING = 1
 PLAYER_FRAMES = 3
 PLAYER_FRAMES_PER_TEXTURE = 6
 
-BULLET_SPEED = 25
+BULLET_SPEED = 18
 BULLET_SCAILING = 0.08
 
 TOTAL_LEVELS = 3
-
+PLAYER_HEALTH = 100
 def load_texture_pair(filename: str) -> typing.List[arcade.Texture]:
     return [
         arcade.load_texture(filename),
@@ -162,10 +164,14 @@ class GameView(arcade.View):
         self.view_bottom = 0
         self.view_left = 0
         self.lives = 3
+        self.player_health = PLAYER_HEALTH
         self.bullet_list = None
+        self.enemy_bullet_list = None
         self.marker_x = None
         self.current_level = 1
-        self.enemy_list = None\
+        self.enemy_list = None
+        self.time_since_last_firing = 0.0
+        self.time_between_firing = 1.5
 
     def load_map(self):
         platforms_layername = "walls"
@@ -201,7 +207,7 @@ class GameView(arcade.View):
         
          # bullet sprite
         self.bullet_list = arcade.SpriteList()
-       
+        self.enemy_bullet_list = arcade.SpriteList()
         self.load_map()
         self.player_physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list)
         
@@ -211,7 +217,7 @@ class GameView(arcade.View):
             enemy1.center_y = 448
             enemy1.change_x = 2
             enemy1.boundary_right = 8664
-            enemy1.boundary_left = 8216
+            enemy1.boundary_left = 7830
             enemy1.change_x = 2
             self.enemy_list.append(enemy1)
 
@@ -247,6 +253,7 @@ class GameView(arcade.View):
         self.enemy_list.draw()
         arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
         self.bullet_list.draw()
+        self.enemy_bullet_list.draw()
 
     def death(self):
         self.window.show_view(self.window.death_view)
@@ -255,25 +262,57 @@ class GameView(arcade.View):
         self.enemy_list.update()
         self.player.update()
         self.player.update_animation()
-        print(self.player.center_x, self.player.center_y)
+        #print(self.player.center_x, self.player.center_y)
         self.enemy_list.update()
         self.enemy_list.update_animation()
+        self.time_since_last_firing += delta_time
         for enemy in self.enemy_list:
             if arcade.check_for_collision_with_list(enemy, self.wall_list) == True :
                 enemy.change_x *= -1
             if enemy.center_x < enemy.boundary_left or enemy.center_x > enemy.boundary_right:
                 enemy.change_x *= -1
-        self.player_physics_engine.update()
-
-
+            if self.player.center_x <= enemy.boundary_right and self.player.center_x >= enemy.boundary_left:
+                if self.player.center_x > enemy.center_x:
+                    enemy.change_x = 2
+                if self.player.center_x < enemy.center_x:
+                    enemy.change_x = -2
+                if self.time_since_last_firing >= self.time_between_firing:
+                   
+                    if enemy.character_face_direction == LEFT_FACING:
+                        bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
+                        bullet.change_x = -BULLET_SPEED
+                        bullet.center_x = enemy.center_x - 45
+                        bullet.center_y = enemy.center_y
+                        self.time_since_last_firing = 0
+                    else:
+                        bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING)
+                        bullet.change_x = BULLET_SPEED
+                        bullet.center_x = enemy.center_x + 45
+                        bullet.center_y = enemy.center_y
+                        self.time_since_last_firing = 0
+                    self.enemy_bullet_list.append(bullet)
         
+
+        for bullet in self.enemy_bullet_list:
+            touching = arcade.check_for_collision(bullet, self.player)
+            colliding = arcade.check_for_collision_with_list(bullet, self.wall_list)
+            for b in colliding:
+                bullet.kill()
+            if touching == True:
+                bullet.kill()
+
+        self.enemy_bullet_list.update()            
+
+                #if arcade.check_for_collision(enemy, self.player) == True:
+                    #exit()
+
+
+        self.player_physics_engine.update()
+            
+       
 
         changed = False
 
-
-        
-        
- 
         self.bullet_list.update()
 
         for bullet in self.bullet_list:
