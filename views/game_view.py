@@ -22,9 +22,11 @@ PLAYER_FRAMES_PER_TEXTURE = 6
 
 BULLET_SPEED = 18
 BULLET_SCAILING = 0.08
+BULLET_DAMAGE = 20
+BULLET_AMOUNT = 6
 
 TOTAL_LEVELS = 3
-MAX_PLAYER_HEALTH = 150
+MAX_PLAYER_HEALTH = 180
 HEALTH_BAR_WIDTH = 200
 
 MAX_ENEMY_HEALTH = 100
@@ -170,12 +172,13 @@ class GameView(arcade.View):
         self.player_health = None
         self.enemiy_health = MAX_ENEMY_HEALTH
         self.bullet_list = None
+        self.bullet_amount = BULLET_AMOUNT
         self.enemy_bullet_list = None
         self.marker_x = None
         self.current_level = 1
         self.enemy_list = None
         self.time_since_last_firing = 0.0
-        self.time_between_firing = 1.0
+        self.time_between_firing = 1.5
 
     def load_map(self):
         platforms_layername = "walls"
@@ -194,7 +197,9 @@ class GameView(arcade.View):
         else:
             self.window.show_view(self.window.level_won)
             self.current_level += 1
+            self.time_between_firing -= 0.5
             self.setup()
+            
   
     def enemiy_pos(self):
         if self.current_level == 1:
@@ -250,12 +255,20 @@ class GameView(arcade.View):
         arcade.draw_text("HEALTH", self.view_left + 100, self.view_bottom + (HEIGHT - 100), arcade.color.BLACK, 20)
         arcade.draw_rectangle_filled(self.view_left + 300, self.view_bottom + (HEIGHT - 85), width=health_width, height=20, color=arcade.color.RED)
 
+    def lives_counter(self):
+         arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
+
+    def player_bullet_amount(self):
+        arcade.draw_text("Bullets", self.view_left + 30, self.view_bottom + (HEIGHT - 200), arcade.color.BLACK, 30 )
+        arcade.draw_text(str(self.bullet_amount), self.view_left + 140, self.view_bottom + (HEIGHT - 200), arcade.color.BLACK, 40)
+
     def on_draw(self):
         arcade.start_render()
         self.wall_list.draw()
         self.player.draw()
         self.enemy_list.draw()
-        arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
+        self.lives_counter()
+        self.player_bullet_amount()
         self.bullet_list.draw()
         self.enemy_bullet_list.draw()
         self.player_health_bar()
@@ -305,7 +318,7 @@ class GameView(arcade.View):
                 bullet.kill()
             
             for enemy in touching:
-                self.enemiy_health -= 25
+                self.enemiy_health -= BULLET_DAMAGE
 
                 if self.enemiy_health == 0:
                     enemy.kill()
@@ -317,7 +330,7 @@ class GameView(arcade.View):
             touching = arcade.check_for_collision(bullet, self.player)
             if touching == True:
                 bullet.kill()
-                self.player_health -= 25
+                self.player_health -= BULLET_DAMAGE
 
         for bullet in self.enemy_bullet_list:
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
@@ -416,18 +429,21 @@ class GameView(arcade.View):
             self.player.change_y = -PLAYER_MOVEMENT_SPEED
         # first bullet when space bar is pressed 
         if self.player.jump == False: 
-            if key == arcade.key.SPACE:   
-                if self.player.character_face_direction == LEFT_FACING:
-                    bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
-                    bullet.change_x = -BULLET_SPEED
-                    bullet.center_x = self.player.center_x - 45
-                    bullet.center_y = self.player.center_y
-                else:
-                    bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING)
-                    bullet.change_x = BULLET_SPEED
-                    bullet.center_x = self.player.center_x + 45
-                    bullet.center_y = self.player.center_y
-                self.bullet_list.append(bullet)
+            if key == arcade.key.SPACE: 
+                if self.bullet_amount > 0:  
+                    if self.player.character_face_direction == LEFT_FACING:
+                        bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
+                        bullet.change_x = -BULLET_SPEED
+                        bullet.center_x = self.player.center_x - 45
+                        bullet.center_y = self.player.center_y
+                        self.bullet_amount -= 1
+                    else:
+                        bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING)
+                        bullet.change_x = BULLET_SPEED
+                        bullet.center_x = self.player.center_x + 45
+                        bullet.center_y = self.player.center_y
+                        self.bullet_amount -= 1
+                    self.bullet_list.append(bullet)
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
