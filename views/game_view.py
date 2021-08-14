@@ -167,7 +167,7 @@ class GameView(arcade.View):
         self.view_bottom = 0
         self.view_left = 0
         self.lives = 3
-        self.player_health = MAX_PLAYER_HEALTH
+        self.player_health = None
         self.enemiy_health = MAX_ENEMY_HEALTH
         self.bullet_list = None
         self.enemy_bullet_list = None
@@ -175,7 +175,7 @@ class GameView(arcade.View):
         self.current_level = 1
         self.enemy_list = None
         self.time_since_last_firing = 0.0
-        self.time_between_firing = 1.5
+        self.time_between_firing = 1.0
 
     def load_map(self):
         platforms_layername = "walls"
@@ -228,6 +228,7 @@ class GameView(arcade.View):
             
         # main player
         self.player = PlayerCharacter()
+        self.player_health = MAX_PLAYER_HEALTH
         self.player.center_x = 50
         self.player.center_y = 500
         self.view_left = 0
