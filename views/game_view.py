@@ -25,6 +25,7 @@ BULLET_SCAILING = 0.08
 
 TOTAL_LEVELS = 3
 MAX_PLAYER_HEALTH = 150
+HEALTH_BAR_WIDTH = 200
 
 MAX_ENEMY_HEALTH = 100
 def load_texture_pair(filename: str) -> typing.List[arcade.Texture]:
@@ -215,20 +216,12 @@ class GameView(arcade.View):
             self.enemy_list.append(enemy2)
 
             enemy3 = Enemy1()
-            enemy3.center_x = 10500
-            enemy3.center_y = 576
+            enemy3.center_x = 16400
+            enemy3.center_y = 512
             enemy3.change_x = 2
-            enemy3.boundary_right = 11091
-            enemy3.boundary_left = 10231
+            enemy3.boundary_right = 17030
+            enemy3.boundary_left = 16020
             self.enemy_list.append(enemy3)
-
-            enemy4 = Enemy1()
-            enemy4.center_x = 16400
-            enemy4.center_y = 512
-            enemy4.change_x = 2
-            enemy4.boundary_right = 17030
-            enemy4.boundary_left = 16020
-            self.enemy_list.append(enemy4)
 
     def setup(self):
         
@@ -250,7 +243,11 @@ class GameView(arcade.View):
         
         self.enemiy_pos()
 
+    def player_health_bar(self):
+        health_width = HEALTH_BAR_WIDTH * (self.player_health/MAX_PLAYER_HEALTH)
 
+        arcade.draw_text("HEALTH", self.view_left + 100, self.view_bottom + (HEIGHT - 100), arcade.color.BLACK, 20)
+        arcade.draw_rectangle_filled(self.view_left + 300, self.view_bottom + (HEIGHT - 85), width=health_width, height=20, color=arcade.color.RED)
 
     def on_draw(self):
         arcade.start_render()
@@ -260,6 +257,7 @@ class GameView(arcade.View):
         arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
         self.bullet_list.draw()
         self.enemy_bullet_list.draw()
+        self.player_health_bar()
 
     def death(self):
         self.window.show_view(self.window.death_view)
