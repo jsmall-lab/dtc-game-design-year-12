@@ -24,7 +24,9 @@ BULLET_SPEED = 18
 BULLET_SCAILING = 0.08
 
 TOTAL_LEVELS = 3
-PLAYER_HEALTH = 100
+MAX_PLAYER_HEALTH = 150
+
+MAX_ENEMY_HEALTH = 100
 def load_texture_pair(filename: str) -> typing.List[arcade.Texture]:
     return [
         arcade.load_texture(filename),
@@ -164,7 +166,8 @@ class GameView(arcade.View):
         self.view_bottom = 0
         self.view_left = 0
         self.lives = 3
-        self.player_health = PLAYER_HEALTH
+        self.player_health = MAX_PLAYER_HEALTH
+        self.enemiy_health = MAX_ENEMY_HEALTH
         self.bullet_list = None
         self.enemy_bullet_list = None
         self.marker_x = None
@@ -192,25 +195,7 @@ class GameView(arcade.View):
             self.current_level += 1
             self.setup()
   
-
-    def setup(self):
-        
-            
-        # main player
-        self.player = PlayerCharacter()
-        self.player.center_x = 50
-        self.player.center_y = 500
-        self.view_left = 0
-        self.view_bottom = 0
-
-        self.enemy_list = arcade.SpriteList()
-        
-         # bullet sprite
-        self.bullet_list = arcade.SpriteList()
-        self.enemy_bullet_list = arcade.SpriteList()
-        self.load_map()
-        self.player_physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list)
-        
+    def enemiy_pos(self):
         if self.current_level == 1:
             enemy1 = Enemy1()
             enemy1.center_x = 8300
@@ -244,6 +229,27 @@ class GameView(arcade.View):
             enemy4.boundary_right = 17030
             enemy4.boundary_left = 16020
             self.enemy_list.append(enemy4)
+
+    def setup(self):
+        
+            
+        # main player
+        self.player = PlayerCharacter()
+        self.player.center_x = 50
+        self.player.center_y = 500
+        self.view_left = 0
+        self.view_bottom = 0
+
+        self.enemy_list = arcade.SpriteList()
+        
+         # bullet sprite
+        self.bullet_list = arcade.SpriteList()
+        self.enemy_bullet_list = arcade.SpriteList()
+        self.load_map()
+        self.player_physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list)
+        
+        self.enemiy_pos()
+
 
 
     def on_draw(self):
@@ -290,15 +296,33 @@ class GameView(arcade.View):
                         bullet.center_x = enemy.center_x + 45
                         bullet.center_y = enemy.center_y
                         self.time_since_last_firing = 0
+                        
                     self.enemy_bullet_list.append(bullet)
+        
+        for bullet in self.bullet_list:
+            touching = arcade.check_for_collision_with_list(bullet, self.enemy_list)
+
+            for b in touching:
+                bullet.kill()
+            
+            for enemy in touching:
+                self.enemiy_health -= 25
+
+                if self.enemiy_health == 0:
+                    enemy.kill()
+                    self.enemiy_health = MAX_ENEMY_HEALTH
+
         
 
         for bullet in self.enemy_bullet_list:
             touching = arcade.check_for_collision(bullet, self.player)
-            colliding = arcade.check_for_collision_with_list(bullet, self.wall_list)
-            for b in colliding:
-                bullet.kill()
             if touching == True:
+                bullet.kill()
+                self.player_health -= 25
+
+        for bullet in self.enemy_bullet_list:
+            touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
+            for b in touching:
                 bullet.kill()
 
         self.enemy_bullet_list.update()            
@@ -360,7 +384,11 @@ class GameView(arcade.View):
         if self.view_left < 0:
             self.view_left = 0
         
-        
+        if self.player_health == 0:
+            self.death()
+            self.setup()
+            self.lives -= 1
+
         if self.player.center_y < - 1100:
             self.death()
             self.setup()
