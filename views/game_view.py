@@ -93,7 +93,7 @@ class PlayerCharacter(arcade.Sprite):
 class Enemy1(arcade.Sprite):
     def __init__(self):
         super().__init__()
-        self.change_x = 0
+        
         self.character_face_direction = RIGHT_FACING
 
         self.cur_texture = 0
@@ -109,7 +109,7 @@ class Enemy1(arcade.Sprite):
 
         self.idle = False
 
-        self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_idle-1.png.png")
+        self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/enemies/enemy1/enemy_idle.png")
 
         
         self.walk_textures: typing.List[typing.List[arcade.Texture]] = []
@@ -150,20 +150,22 @@ class Enemy1(arcade.Sprite):
         if (self.virtual_frames + 1) % PLAYER_FRAMES_PER_TEXTURE == 0:
             self.cur_texture = self.virtual_frames // PLAYER_FRAMES_PER_TEXTURE
             self.texture = self.walk_textures[self.cur_texture][self.character_face_direction]
+            
 class GameView(arcade.View):
     def __init__(self):
         super().__init__()
         arcade.set_background_color(arcade.color.AIR_FORCE_BLUE)
         self.player = None
-        self.enemy1 = None
         self.wall_list: arcade.SpriteList
-        self.physics_engine = None
+        self.enemy_list = None
+        self.player_physics_engine = None
         self.view_bottom = 0
         self.view_left = 0
         self.lives = 3
         self.bullet_list = None
         self.marker_x = None
         self.current_level = 1
+        self.enemy_list = None\
 
     def load_map(self):
         platforms_layername = "walls"
@@ -194,20 +196,55 @@ class GameView(arcade.View):
         self.player.center_y = 500
         self.view_left = 0
         self.view_bottom = 0
-        self.enemy1 = Enemy1()
-        self.enemy1.center_x = 200
-        self.enemy1.center_y = 500
+
+        self.enemy_list = arcade.SpriteList()
+        
          # bullet sprite
         self.bullet_list = arcade.SpriteList()
-
+       
         self.load_map()
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list)
+        self.player_physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list)
         
+        if self.current_level == 1:
+            enemy1 = Enemy1()
+            enemy1.center_x = 8300
+            enemy1.center_y = 448
+            enemy1.change_x = 2
+            enemy1.boundary_right = 8664
+            enemy1.boundary_left = 8216
+            enemy1.change_x = 2
+            self.enemy_list.append(enemy1)
+
+            enemy2 = Enemy1()
+            enemy2.center_x = 10400
+            enemy2.center_y = 1280
+            enemy2.change_x = 2
+            enemy2.boundary_right = 10953
+            enemy2.boundary_left = 10373
+            self.enemy_list.append(enemy2)
+
+            enemy3 = Enemy1()
+            enemy3.center_x = 10500
+            enemy3.center_y = 576
+            enemy3.change_x = 2
+            enemy3.boundary_right = 11091
+            enemy3.boundary_left = 10231
+            self.enemy_list.append(enemy3)
+
+            enemy4 = Enemy1()
+            enemy4.center_x = 16400
+            enemy4.center_y = 512
+            enemy4.change_x = 2
+            enemy4.boundary_right = 17030
+            enemy4.boundary_left = 16020
+            self.enemy_list.append(enemy4)
+
+
     def on_draw(self):
         arcade.start_render()
         self.wall_list.draw()
         self.player.draw()
-        self.enemy1.draw()
+        self.enemy_list.draw()
         arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
         self.bullet_list.draw()
 
@@ -215,22 +252,38 @@ class GameView(arcade.View):
         self.window.show_view(self.window.death_view)
 
     def update(self, delta_time):
+        self.enemy_list.update()
         self.player.update()
         self.player.update_animation()
-        self.physics_engine.update()
+        print(self.player.center_x, self.player.center_y)
+        self.enemy_list.update()
+        self.enemy_list.update_animation()
+        for enemy in self.enemy_list:
+            if arcade.check_for_collision_with_list(enemy, self.wall_list) == True :
+                enemy.change_x *= -1
+            if enemy.center_x < enemy.boundary_left or enemy.center_x > enemy.boundary_right:
+                enemy.change_x *= -1
+        self.player_physics_engine.update()
+
+
+        
+
         changed = False
 
-        self.enemy1.center_x = arcade.utils.lerp(self.enemy1.center_x, self.player.center_x, 0.005)
-        self.enemy1.center_y = arcade.utils.lerp(self.enemy1.center_y, self.player.center_y, 0.005)
-        self.enemy1.update()
 
+        
+        
+ 
         self.bullet_list.update()
+
         for bullet in self.bullet_list:
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
                 bullet.kill()
   
             if bullet.center_x > self.player.center_x + WIDTH:
+                bullet.kill()
+            if bullet.center_x < self.player.center_x - WIDTH:
                 bullet.kill()
                          
 
@@ -291,7 +344,7 @@ class GameView(arcade.View):
             self.player.change_x = -PLAYER_MOVEMENT_SPEED
         if key == arcade.key.RIGHT:
             self.player.change_x = PLAYER_MOVEMENT_SPEED
-        if key == arcade.key.UP and self.physics_engine.can_jump(y_distance=5):
+        if key == arcade.key.UP and self.player_physics_engine.can_jump(y_distance=5):
             self.player.change_y = JUMP_SPEED
         if key == arcade.key.DOWN:
             self.player.change_y = -PLAYER_MOVEMENT_SPEED
