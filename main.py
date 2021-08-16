@@ -4,6 +4,7 @@ from views.start_view import StartView
 from views.game_view import GameView
 from views.level_won_view import LevelWon
 from views.game_won_view import GameWon
+from views.game_failed_view import GameFailed
 
 
 WIDTH = 1200
@@ -19,6 +20,7 @@ class GameWindow(arcade.Window):
         self.death_view= DeathView()
         self.level_won = LevelWon()
         self.game_won = GameWon()
+        self.game_failed = GameFailed()
         self.show_view(self.start_view)
         
 
