@@ -5,11 +5,11 @@ from views.game_view import GameView
 from views.level_won_view import LevelWon
 from views.game_won_view import GameWon
 from views.game_failed_view import GameFailed
-
+from views.pause_view import Pause
 
 WIDTH = 1200
 HEIGHT = 800
-TITLE = 'The Game'
+TITLE = 'The Quest For The Snake Eye Gem'
 
 
 class GameWindow(arcade.Window):
@@ -21,6 +21,7 @@ class GameWindow(arcade.Window):
         self.level_won = LevelWon()
         self.game_won = GameWon()
         self.game_failed = GameFailed()
+        self.pause_view = Pause()
         self.show_view(self.start_view)
         
 

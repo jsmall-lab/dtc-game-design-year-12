@@ -243,7 +243,7 @@ class GameView(arcade.View):
         self.bullet_amount = None
         self.enemy_bullet_list = None
         self.marker_x = None
-        self.current_level = 3
+        self.current_level = 1
         self.enemy_list = None
         self.time_since_last_firing = 0.0
         self.time_between_firing = 0.9
@@ -477,7 +477,7 @@ class GameView(arcade.View):
     def game_failed(self):
         self.window.show_view(self.window.game_failed)
 
-    def update(self, delta_time):
+    def update(self, delta_time: float):
         self.enemy_list.update()
         self.player.update()
         self.player.update_animation()
@@ -648,8 +648,9 @@ class GameView(arcade.View):
             
    
             
+    def pause(self):
+        self.window.show_view(self.window.pause_view)
         
-
     def on_key_press(self, key, modifiers):
         # user input
         if key == arcade.key.LEFT:
@@ -677,7 +678,8 @@ class GameView(arcade.View):
                         bullet.center_y = self.player.center_y
                         self.bullet_amount -= 1
                     self.bullet_list.append(bullet)
-
+        if key == arcade.key.ESCAPE:
+            self.pause() 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player.change_x = 0
