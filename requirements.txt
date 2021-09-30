@@ -1,0 +1,4 @@
+arcade==2.5.7
+black
+isort
+flake8

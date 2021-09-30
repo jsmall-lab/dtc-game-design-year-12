@@ -1,11 +1,10 @@
-import arcade
 import typing
 
-
+import arcade
 
 WIDTH = 1200
 HEIGHT = 800
-TITLE = 'The Game'
+TITLE = "The Game"
 
 PLAYER_MOVEMENT_SPEED = 5
 JUMP_SPEED = 11
@@ -35,8 +34,9 @@ ENEMY_MOVEMENT_SPEED = 2
 def load_texture_pair(filename: str) -> typing.List[arcade.Texture]:
     return [
         arcade.load_texture(filename),
-        arcade.load_texture(filename, flipped_horizontally=True)
+        arcade.load_texture(filename, flipped_horizontally=True),
     ]
+
 
 class PlayerCharacter(arcade.Sprite):
     def __init__(self):
@@ -53,31 +53,34 @@ class PlayerCharacter(arcade.Sprite):
 
         self.jump = False
 
-        self.jump_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_jump.png")
+        self.jump_texture_pair = load_texture_pair(
+            "./assets/sprites_for_game/main_character/main_character_jump.png"
+        )
 
         self.idle = False
 
-        self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_idle-1.png.png")
+        self.idle_texture_pair = load_texture_pair(
+            "./assets/sprites_for_game/main_character/main_character_idle-1.png.png"
+        )
 
-        
         self.walk_textures: typing.List[typing.List[arcade.Texture]] = []
 
-        if self.jump == False:
+        if not self.jump:
             for i in range(PLAYER_FRAMES):
-                texture = load_texture_pair(f"./assets/sprites_for_game/main_character/main_character{i}.png")
+                texture = load_texture_pair(
+                    f"./assets/sprites_for_game/main_character/main_character{i}.png"
+                )
                 self.walk_textures.append(texture)
-                
+
         self.texture = self.idle_texture_pair[0]
 
+    def update_animation(self, delta_time: float = 1 / 60):
 
-    def update_animation(self, delta_time:float = 1/60):
-       
         if self.change_x < 0 and self.character_face_direction == RIGHT_FACING:
             self.character_face_direction = LEFT_FACING
         if self.change_x > 0 and self.character_face_direction == LEFT_FACING:
             self.character_face_direction = RIGHT_FACING
-            
-        
+
         if self.change_x == 0 or self.change_y < 0:
             self.texture = self.idle_texture_pair[self.character_face_direction]
             self.idle = True
@@ -87,22 +90,25 @@ class PlayerCharacter(arcade.Sprite):
             self.texture = self.jump_texture_pair[self.character_face_direction]
             self.jump = True
             return
-        
+
         self.jump = False
 
         self.idle = False
         self.virtual_frames += 1
-        if self.virtual_frames > PLAYER_FRAMES*PLAYER_FRAMES_PER_TEXTURE -1:
+        if self.virtual_frames > PLAYER_FRAMES * PLAYER_FRAMES_PER_TEXTURE - 1:
             self.virtual_frames = 0
             self.cur_texture = 0
         if (self.virtual_frames + 1) % PLAYER_FRAMES_PER_TEXTURE == 0:
             self.cur_texture = self.virtual_frames // PLAYER_FRAMES_PER_TEXTURE
-            self.texture = self.walk_textures[self.cur_texture][self.character_face_direction]
+            self.texture = self.walk_textures[self.cur_texture][
+                self.character_face_direction
+            ]
+
 
 class Enemy1(arcade.Sprite):
     def __init__(self):
         super().__init__()
-        
+
         self.character_face_direction = RIGHT_FACING
 
         self.cur_texture = 0
@@ -112,58 +118,62 @@ class Enemy1(arcade.Sprite):
 
         self.touching_ramp = False
 
-        #self.jump = False
+        # self.jump = False
 
-        #self.jump_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_jump.png")
+        # self.jump_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_jump.png")
 
         self.idle = False
 
-        self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/enemies/enemy1/enemy_idle.png")
+        self.idle_texture_pair = load_texture_pair(
+            "./assets/sprites_for_game/enemies/enemy1/enemy_idle.png"
+        )
 
-        
         self.walk_textures: typing.List[typing.List[arcade.Texture]] = []
 
-        #if self.jump == False:
+        # if self.jump == False:
         for i in range(PLAYER_FRAMES):
-            texture = load_texture_pair(f"./assets/sprites_for_game/enemies/enemy1/enemy{i}.png")
+            texture = load_texture_pair(
+                f"./assets/sprites_for_game/enemies/enemy1/enemy{i}.png"
+            )
             self.walk_textures.append(texture)
-            
+
         self.texture = self.idle_texture_pair[0]
 
+    def update_animation(self, delta_time: float = 1 / 60):
 
-    def update_animation(self, delta_time:float = 1/60):
-       
         if self.change_x < 0 and self.character_face_direction == RIGHT_FACING:
             self.character_face_direction = LEFT_FACING
         if self.change_x > 0 and self.character_face_direction == LEFT_FACING:
             self.character_face_direction = RIGHT_FACING
-            
-        
+
         if self.change_x == 0 or self.change_y < 0:
             self.texture = self.idle_texture_pair[self.character_face_direction]
             self.idle = True
             return
 
-       # if self.change_y > 0:
-            #self.texture = self.jump_texture_pair[self.character_face_direction]
-           # self.jump = True
-           # return
-        
+        # if self.change_y > 0:
+        # self.texture = self.jump_texture_pair[self.character_face_direction]
+        # self.jump = True
+        # return
+
         self.jump = False
 
         self.idle = False
         self.virtual_frames += 1
-        if self.virtual_frames > PLAYER_FRAMES*PLAYER_FRAMES_PER_TEXTURE -1:
+        if self.virtual_frames > PLAYER_FRAMES * PLAYER_FRAMES_PER_TEXTURE - 1:
             self.virtual_frames = 0
             self.cur_texture = 0
         if (self.virtual_frames + 1) % PLAYER_FRAMES_PER_TEXTURE == 0:
             self.cur_texture = self.virtual_frames // PLAYER_FRAMES_PER_TEXTURE
-            self.texture = self.walk_textures[self.cur_texture][self.character_face_direction]
+            self.texture = self.walk_textures[self.cur_texture][
+                self.character_face_direction
+            ]
+
 
 class Boss(arcade.Sprite):
     def __init__(self):
         super().__init__()
-        
+
         self.character_face_direction = RIGHT_FACING
 
         self.cur_texture = 0
@@ -173,54 +183,58 @@ class Boss(arcade.Sprite):
 
         self.touching_ramp = False
 
-        #self.jump = False
+        # self.jump = False
 
-        #self.jump_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_jump.png")
+        # self.jump_texture_pair = load_texture_pair("./assets/sprites_for_game/main_character/main_character_jump.png")
 
         self.idle = False
 
-        self.idle_texture_pair = load_texture_pair("./assets/sprites_for_game/enemies/boss/boss_idle.png")
+        self.idle_texture_pair = load_texture_pair(
+            "./assets/sprites_for_game/enemies/boss/boss_idle.png"
+        )
 
-        
         self.walk_textures: typing.List[typing.List[arcade.Texture]] = []
 
-        #if self.jump == False:
+        # if self.jump == False:
         for i in range(PLAYER_FRAMES):
-            texture = load_texture_pair(f"./assets/sprites_for_game/enemies/boss/boss{i}.png")
+            texture = load_texture_pair(
+                f"./assets/sprites_for_game/enemies/boss/boss{i}.png"
+            )
             self.walk_textures.append(texture)
-            
+
         self.texture = self.idle_texture_pair[0]
 
+    def update_animation(self, delta_time: float = 1 / 60):
 
-    def update_animation(self, delta_time:float = 1/60):
-       
         if self.change_x < 0 and self.character_face_direction == RIGHT_FACING:
             self.character_face_direction = LEFT_FACING
         if self.change_x > 0 and self.character_face_direction == LEFT_FACING:
             self.character_face_direction = RIGHT_FACING
-            
-        
+
         if self.change_x == 0 or self.change_y < 0:
             self.texture = self.idle_texture_pair[self.character_face_direction]
             self.idle = True
             return
 
-       # if self.change_y > 0:
-            #self.texture = self.jump_texture_pair[self.character_face_direction]
-           # self.jump = True
-           # return
-        
+        # if self.change_y > 0:
+        # self.texture = self.jump_texture_pair[self.character_face_direction]
+        # self.jump = True
+        # return
+
         self.jump = False
 
         self.idle = False
         self.virtual_frames += 1
-        if self.virtual_frames > PLAYER_FRAMES*PLAYER_FRAMES_PER_TEXTURE -1:
+        if self.virtual_frames > PLAYER_FRAMES * PLAYER_FRAMES_PER_TEXTURE - 1:
             self.virtual_frames = 0
             self.cur_texture = 0
         if (self.virtual_frames + 1) % PLAYER_FRAMES_PER_TEXTURE == 0:
             self.cur_texture = self.virtual_frames // PLAYER_FRAMES_PER_TEXTURE
-            self.texture = self.walk_textures[self.cur_texture][self.character_face_direction]
-            
+            self.texture = self.walk_textures[self.cur_texture][
+                self.character_face_direction
+            ]
+
+
 class GameView(arcade.View):
     def __init__(self):
         super().__init__()
@@ -248,14 +262,41 @@ class GameView(arcade.View):
         next_level_marker_layername = "next_level_marker"
         health_pickup_layername = "health_pickup"
         bullet_pickup_layername = "bullet_pickup"
-        level = arcade.tilemap.read_tmx(f"assets/maps/level{self.current_level}_map.tmx")
-        self.wall_list = arcade.tilemap.process_layer(map_object= level, layer_name = platforms_layername, use_spatial_hash = True, scaling = 0.5)
-        marker_list = arcade.tilemap.process_layer(map_object= level, layer_name = next_level_marker_layername, use_spatial_hash = True, scaling = 0.5)
-        self.health_pickup_list = arcade.tilemap.process_layer(map_object= level, layer_name= health_pickup_layername, use_spatial_hash= True, scaling= 0.5)
-        self.bullet_pickup_list = arcade.tilemap.process_layer(map_object= level, layer_name= bullet_pickup_layername, use_spatial_hash= True, scaling= 0.5)
+        level = arcade.tilemap.read_tmx(
+            f"assets/maps/level{self.current_level}_map.tmx"
+        )
+        self.wall_list = arcade.tilemap.process_layer(
+            map_object=level,
+            layer_name=platforms_layername,
+            use_spatial_hash=True,
+            scaling=0.5,
+        )
+        marker_list = arcade.tilemap.process_layer(
+            map_object=level,
+            layer_name=next_level_marker_layername,
+            use_spatial_hash=True,
+            scaling=0.5,
+        )
+        self.health_pickup_list = arcade.tilemap.process_layer(
+            map_object=level,
+            layer_name=health_pickup_layername,
+            use_spatial_hash=True,
+            scaling=0.5,
+        )
+        self.bullet_pickup_list = arcade.tilemap.process_layer(
+            map_object=level,
+            layer_name=bullet_pickup_layername,
+            use_spatial_hash=True,
+            scaling=0.5,
+        )
         if self.current_level == 3:
             gem_layername = "gem"
-            self.gem_pickup_list = arcade.tilemap.process_layer(map_object= level, layer_name= gem_layername, use_spatial_hash= True, scaling= 0.5)
+            self.gem_pickup_list = arcade.tilemap.process_layer(
+                map_object=level,
+                layer_name=gem_layername,
+                use_spatial_hash=True,
+                scaling=0.5,
+            )
         marker = marker_list[0]
         self.wall_list.append(marker)
         self.marker_x = marker.center_x
@@ -269,8 +310,7 @@ class GameView(arcade.View):
             self.current_level += 1
             self.time_between_firing -= 0.5
             self.setup()
-            
-  
+
     def enemiy_pos(self):
         if self.current_level == 1:
             enemy1 = Enemy1()
@@ -347,7 +387,7 @@ class GameView(arcade.View):
             self.enemy_list.append(enemy5)
 
         if self.current_level == 3:
-             
+
             enemy1 = Enemy1()
             enemy1.center_x = 1000
             enemy1.center_y = 512
@@ -380,7 +420,7 @@ class GameView(arcade.View):
             enemy4.center_y = 384
             enemy4.change_x = ENEMY_MOVEMENT_SPEED
             enemy4.boundary_right = 6936
-            enemy4.boundary_left  = 6120
+            enemy4.boundary_left = 6120
             enemy4.boundary_top = 480
             self.enemy_list.append(enemy4)
 
@@ -389,7 +429,7 @@ class GameView(arcade.View):
             enemy5.center_y = 384
             enemy5.change_x = 2.2
             enemy5.boundary_right = 6936
-            enemy5.boundary_left  = 6120
+            enemy5.boundary_left = 6120
             enemy5.boundary_top = 480
             self.enemy_list.append(enemy5)
 
@@ -416,8 +456,7 @@ class GameView(arcade.View):
             self.lives = MAX_LIVES
 
     def setup(self):
-        
-            
+
         # main player
         self.player = PlayerCharacter()
         self.player_health = MAX_PLAYER_HEALTH
@@ -428,28 +467,60 @@ class GameView(arcade.View):
         self.player_lives()
 
         self.enemy_list = arcade.SpriteList()
-        
-         # bullet sprite
+
+        # bullet sprite
         self.bullet_list = arcade.SpriteList()
         self.enemy_bullet_list = arcade.SpriteList()
         self.bullet_amount = BULLET_AMOUNT
         self.load_map()
-        self.player_physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list)
-        
+        self.player_physics_engine = arcade.PhysicsEnginePlatformer(
+            self.player, self.wall_list
+        )
+
         self.enemiy_pos()
 
     def player_health_bar(self):
-        health_width = HEALTH_BAR_WIDTH * (self.player_health/MAX_PLAYER_HEALTH)
+        health_width = HEALTH_BAR_WIDTH * (self.player_health / MAX_PLAYER_HEALTH)
 
-        arcade.draw_text("HEALTH", self.view_left + 100, self.view_bottom + (HEIGHT - 100), arcade.color.BLACK, 20)
-        arcade.draw_rectangle_filled(self.view_left + 300, self.view_bottom + (HEIGHT - 85), width=health_width, height=20, color=arcade.color.RED)
+        arcade.draw_text(
+            "HEALTH",
+            self.view_left + 100,
+            self.view_bottom + (HEIGHT - 100),
+            arcade.color.BLACK,
+            20,
+        )
+        arcade.draw_rectangle_filled(
+            self.view_left + 300,
+            self.view_bottom + (HEIGHT - 85),
+            width=health_width,
+            height=20,
+            color=arcade.color.RED,
+        )
 
     def lives_counter(self):
-         arcade.draw_text(str(self.lives), self.view_left + 30 , self.view_bottom + (HEIGHT -150) , arcade.color.BLACK, 70)
+        arcade.draw_text(
+            str(self.lives),
+            self.view_left + 30,
+            self.view_bottom + (HEIGHT - 150),
+            arcade.color.BLACK,
+            70,
+        )
 
     def player_bullet_amount(self):
-        arcade.draw_text("Bullets", self.view_left + 30, self.view_bottom + (HEIGHT - 200), arcade.color.BLACK, 30 )
-        arcade.draw_text(str(self.bullet_amount), self.view_left + 140, self.view_bottom + (HEIGHT - 200), arcade.color.BLACK, 40)
+        arcade.draw_text(
+            "Bullets",
+            self.view_left + 30,
+            self.view_bottom + (HEIGHT - 200),
+            arcade.color.BLACK,
+            30,
+        )
+        arcade.draw_text(
+            str(self.bullet_amount),
+            self.view_left + 140,
+            self.view_bottom + (HEIGHT - 200),
+            arcade.color.BLACK,
+            40,
+        )
 
     def on_draw(self):
         arcade.start_render()
@@ -479,62 +550,67 @@ class GameView(arcade.View):
         self.enemy_list.update()
         self.enemy_list.update_animation()
         self.time_since_last_firing += delta_time
-        for enemy in self.enemy_list :
-            if arcade.check_for_collision_with_list(enemy, self.wall_list) == True :
+        for enemy in self.enemy_list:
+            if arcade.check_for_collision_with_list(enemy, self.wall_list):
                 enemy.change_x *= -1
-            if enemy.center_x < enemy.boundary_left or enemy.center_x > enemy.boundary_right:
+            if (
+                enemy.center_x < enemy.boundary_left
+                or enemy.center_x > enemy.boundary_right
+            ):
                 enemy.change_x *= -1
-            if self.player.center_x <= enemy.boundary_right and self.player.center_x >= enemy.boundary_left and self.player.center_y < enemy.boundary_top:
+            if (
+                self.player.center_x <= enemy.boundary_right
+                and self.player.center_x >= enemy.boundary_left
+                and self.player.center_y < enemy.boundary_top
+            ):
                 if self.player.center_x > enemy.center_x:
                     enemy.change_x = 2
                 if self.player.center_x < enemy.center_x:
                     enemy.change_x = -2
                 if self.time_since_last_firing >= self.time_between_firing:
-                   
+
                     if enemy.character_face_direction == LEFT_FACING:
-                        bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
+                        bullet = arcade.Sprite(
+                            "assets/consumables/Bullet-1.png.png",
+                            BULLET_SCAILING,
+                            flipped_horizontally=True,
+                        )
                         bullet.change_x = -BULLET_SPEED
                         bullet.center_x = enemy.center_x - 45
                         bullet.center_y = enemy.center_y
                         self.time_since_last_firing = 0
                     else:
-                        bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING)
+                        bullet = arcade.Sprite(
+                            "assets/consumables/Bullet-1.png.png", BULLET_SCAILING
+                        )
                         bullet.change_x = BULLET_SPEED
                         bullet.center_x = enemy.center_x + 45
                         bullet.center_y = enemy.center_y
                         self.time_since_last_firing = 0
-                        
+
                     self.enemy_bullet_list.append(bullet)
                     print(self.time_since_last_firing)
         if self.current_level == 3:
-            if self.player.center_x >= 12000 :
+            if self.player.center_x >= 12000:
                 self.enemiy_health = MAX_BOSS_HEALLTH
-            
-
 
         for bullet in self.bullet_list:
             touching = arcade.check_for_collision_with_list(bullet, self.enemy_list)
 
-
             for b in touching:
                 bullet.remove_from_sprite_lists()
-            
+
             for enemy in touching:
 
-                    
-
                 self.enemiy_health -= BULLET_DAMAGE
-                
+
                 if self.enemiy_health == 0:
                     enemy.remove_from_sprite_lists()
                     self.enemiy_health = MAX_ENEMY_HEALTH
 
-        
-        
-
         for bullet in self.enemy_bullet_list:
             touching = arcade.check_for_collision(bullet, self.player)
-            if touching == True:
+            if touching:
                 bullet.remove_from_sprite_lists()
                 self.player_health -= BULLET_DAMAGE
                 print(BULLET_DAMAGE, self.player_health)
@@ -543,21 +619,18 @@ class GameView(arcade.View):
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
                 bullet.remove_from_sprite_lists()
-            
+
             if bullet.center_x > self.player.center_x + WIDTH:
                 bullet.remove_from_sprite_lists()
             if bullet.center_x < self.player.center_x - WIDTH:
                 bullet.remove_from_sprite_lists()
 
-        self.enemy_bullet_list.update()            
+        self.enemy_bullet_list.update()
 
-                #if arcade.check_for_collision(enemy, self.player) == True:
-                    #exit()
-
+        # if arcade.check_for_collision(enemy, self.player) == True:
+        # exit()
 
         self.player_physics_engine.update()
-            
-       
 
         changed = False
 
@@ -567,34 +640,39 @@ class GameView(arcade.View):
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
                 bullet.remove_from_sprite_lists()
-  
+
             if bullet.center_x > self.player.center_x + WIDTH:
                 bullet.remove_from_sprite_lists()
             if bullet.center_x < self.player.center_x - WIDTH:
                 bullet.remove_from_sprite_lists()
-                         
-        health_hit_list = arcade.check_for_collision_with_list(self.player, self.health_pickup_list)
+
+        health_hit_list = arcade.check_for_collision_with_list(
+            self.player, self.health_pickup_list
+        )
         for health in health_hit_list:
             health.remove_from_sprite_lists()
             self.player_health = MAX_PLAYER_HEALTH
-        
-        bullet_hit_list = arcade.check_for_collision_with_list(self.player, self.bullet_pickup_list)
+
+        bullet_hit_list = arcade.check_for_collision_with_list(
+            self.player, self.bullet_pickup_list
+        )
         for bullet in bullet_hit_list:
             bullet.remove_from_sprite_lists()
             self.bullet_amount += BULLET_AMOUNT
 
         if self.current_level == 3:
-            gem_hit = arcade.check_for_collision_with_list(self.player, self.gem_pickup_list)
+            gem_hit = arcade.check_for_collision_with_list(
+                self.player, self.gem_pickup_list
+            )
             for gem in gem_hit:
                 gem.remove_from_sprite_lists
 
-        
         # scrolling for main character
         left_boundary = self.view_left + VIEWPORT_MARGIN
         if self.player.left < left_boundary:
             self.view_left -= left_boundary - self.player.left
             changed = True
-            
+
         right_boundary = self.view_left + WIDTH - VIEWPORT_MARGIN
         if self.player.right > right_boundary:
             self.view_left += self.player.right - right_boundary
@@ -607,43 +685,41 @@ class GameView(arcade.View):
 
         bottom_boundary = self.view_bottom + VIEWPORT_MARGIN
         if self.player.bottom < bottom_boundary:
-            self.view_bottom -= bottom_boundary -self.player.bottom
+            self.view_bottom -= bottom_boundary - self.player.bottom
             changed = True
 
         if self.view_left < 0:
             self.view_left = 0
-        
-         
+
         if changed:
-            arcade.set_viewport(self.view_left,
-                                WIDTH + self.view_left,
-                                self.view_bottom,
-                                HEIGHT + self.view_bottom)
+            arcade.set_viewport(
+                self.view_left,
+                WIDTH + self.view_left,
+                self.view_bottom,
+                HEIGHT + self.view_bottom,
+            )
 
         if self.view_left < 0:
             self.view_left = 0
-        
+
         if self.player_health == 0:
             self.death()
             self.setup()
             self.lives -= 1
 
-        if self.player.center_y < - 1100:
+        if self.player.center_y < -1100:
             self.death()
             self.setup()
             self.lives -= 1
-           
-                # character live counter
+
+            # character live counter
         if self.lives == 0:
             self.game_failed()
             self.current_level = 1
 
-        
         if self.player.center_x > self.marker_x:
             self.progress_level()
-            
-   
-            
+
     def pause(self):
         self.window.show_view(self.window.pause_view)
 
@@ -657,31 +733,32 @@ class GameView(arcade.View):
             self.player.change_y = JUMP_SPEED
         if key == arcade.key.DOWN:
             self.player.change_y = -PLAYER_MOVEMENT_SPEED
-        # first bullet when space bar is pressed 
-        if self.player.jump == False: 
-            if key == arcade.key.SPACE: 
-                if self.bullet_amount > 0:  
+        # first bullet when space bar is pressed
+        if not self.player.jump:
+            if key == arcade.key.SPACE:
+                if self.bullet_amount > 0:
                     if self.player.character_face_direction == LEFT_FACING:
-                        bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING, flipped_horizontally= True)                
+                        bullet = arcade.Sprite(
+                            "assets/consumables/Bullet-1.png.png",
+                            BULLET_SCAILING,
+                            flipped_horizontally=True,
+                        )
                         bullet.change_x = -BULLET_SPEED
                         bullet.center_x = self.player.center_x - 45
                         bullet.center_y = self.player.center_y
                         self.bullet_amount -= 1
                     else:
-                        bullet = arcade.Sprite('assets/consumables/Bullet-1.png.png', BULLET_SCAILING)
+                        bullet = arcade.Sprite(
+                            "assets/consumables/Bullet-1.png.png", BULLET_SCAILING
+                        )
                         bullet.change_x = BULLET_SPEED
                         bullet.center_x = self.player.center_x + 45
                         bullet.center_y = self.player.center_y
                         self.bullet_amount -= 1
                     self.bullet_list.append(bullet)
         if key == arcade.key.ESCAPE:
-            self.pause() 
+            self.pause()
+
     def on_key_release(self, key, modifiers):
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player.change_x = 0
-   
-
-        
-
-
-
