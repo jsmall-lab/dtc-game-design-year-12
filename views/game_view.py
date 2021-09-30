@@ -3,11 +3,6 @@ import typing
 
 
 
-
-
-
-
-
 WIDTH = 1200
 HEIGHT = 800
 TITLE = 'The Game'
@@ -352,7 +347,7 @@ class GameView(arcade.View):
             self.enemy_list.append(enemy5)
 
         if self.current_level == 3:
-
+             
             enemy1 = Enemy1()
             enemy1.center_x = 1000
             enemy1.center_y = 512
@@ -510,7 +505,7 @@ class GameView(arcade.View):
                         self.time_since_last_firing = 0
                         
                     self.enemy_bullet_list.append(bullet)
-                    
+                    print(self.time_since_last_firing)
         if self.current_level == 3:
             if self.player.center_x >= 12000 :
                 self.enemiy_health = MAX_BOSS_HEALLTH
@@ -522,7 +517,7 @@ class GameView(arcade.View):
 
 
             for b in touching:
-                bullet.kill()
+                bullet.remove_from_sprite_lists()
             
             for enemy in touching:
 
@@ -531,7 +526,7 @@ class GameView(arcade.View):
                 self.enemiy_health -= BULLET_DAMAGE
                 
                 if self.enemiy_health == 0:
-                    enemy.kill()
+                    enemy.remove_from_sprite_lists()
                     self.enemiy_health = MAX_ENEMY_HEALTH
 
         
@@ -540,18 +535,19 @@ class GameView(arcade.View):
         for bullet in self.enemy_bullet_list:
             touching = arcade.check_for_collision(bullet, self.player)
             if touching == True:
-                bullet.kill()
+                bullet.remove_from_sprite_lists()
                 self.player_health -= BULLET_DAMAGE
+                print(BULLET_DAMAGE, self.player_health)
 
         for bullet in self.enemy_bullet_list:
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
-                bullet.kill()
+                bullet.remove_from_sprite_lists()
             
             if bullet.center_x > self.player.center_x + WIDTH:
-                bullet.kill()
+                bullet.remove_from_sprite_lists()
             if bullet.center_x < self.player.center_x - WIDTH:
-                bullet.kill()
+                bullet.remove_from_sprite_lists()
 
         self.enemy_bullet_list.update()            
 
@@ -570,12 +566,12 @@ class GameView(arcade.View):
         for bullet in self.bullet_list:
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
-                bullet.kill()
+                bullet.remove_from_sprite_lists()
   
             if bullet.center_x > self.player.center_x + WIDTH:
-                bullet.kill()
+                bullet.remove_from_sprite_lists()
             if bullet.center_x < self.player.center_x - WIDTH:
-                bullet.kill()
+                bullet.remove_from_sprite_lists()
                          
         health_hit_list = arcade.check_for_collision_with_list(self.player, self.health_pickup_list)
         for health in health_hit_list:
@@ -650,7 +646,7 @@ class GameView(arcade.View):
             
     def pause(self):
         self.window.show_view(self.window.pause_view)
-        
+
     def on_key_press(self, key, modifiers):
         # user input
         if key == arcade.key.LEFT:
