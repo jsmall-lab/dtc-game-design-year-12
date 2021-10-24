@@ -341,106 +341,106 @@ class GameView(arcade.View):
             self.enemy_list.append(enemy3)
 
         if self.current_level == 2:
-            enemy1 = Enemy1()
-            enemy1.center_x = 3700
-            enemy1.center_y = 384
-            enemy1.change_x = ENEMY_MOVEMENT_SPEED
-            enemy1.boundary_right = 4100
-            enemy1.boundary_left = 3640
-            enemy1.boundary_top = 450
-            self.enemy_list.append(enemy1)
-
-            enemy2 = Enemy1()
-            enemy2.center_x = 6300
-            enemy2.center_y = 960
-            enemy2.change_x = ENEMY_MOVEMENT_SPEED
-            enemy2.boundary_right = 6772
-            enemy2.boundary_left = 5942
-            enemy2.boundary_top = 1060
-            self.enemy_list.append(enemy2)
-
-            enemy3 = Enemy1()
-            enemy3.center_x = 7400
-            enemy3.center_y = 1792
-            enemy3.change_x = ENEMY_MOVEMENT_SPEED
-            enemy3.boundary_right = 7640
-            enemy3.boundary_left = 7000
-            enemy3.boundary_top = 1890
-            self.enemy_list.append(enemy3)
-
             enemy4 = Enemy1()
-            enemy4.center_x = 6000
-            enemy4.center_y = 2304
-            enemy4.change_x = ENEMY_MOVEMENT_SPEED
-            enemy4.boundary_right = 7042
-            enemy4.boundary_left = 6309
-            enemy4.boundary_top = 2400
-            self.enemy_list.append(enemy4)
-
-            enemy5 = Enemy1()
-            enemy5.center_x = 10000
-            enemy5.center_y = 576
-            enemy5.change_x = ENEMY_MOVEMENT_SPEED
-            enemy5.boundary_right = 10448
-            enemy5.boundary_left = 9498
-            enemy5.boundary_top = 670
-            self.enemy_list.append(enemy5)
-
-        if self.current_level == 3:
-
-            enemy1 = Enemy1()
-            enemy1.center_x = 1000
-            enemy1.center_y = 512
-            enemy1.change_x = ENEMY_MOVEMENT_SPEED
-            enemy1.boundary_right = 1220
-            enemy1.boundary_left = 830
-            enemy1.boundary_top = 610
-            self.enemy_list.append(enemy1)
-
-            enemy2 = Enemy1()
-            enemy2.center_x = 3000
-            enemy2.center_y = 512
-            enemy2.change_x = ENEMY_MOVEMENT_SPEED
-            enemy2.boundary_right = 3474
-            enemy2.boundary_left = 2964
-            enemy2.boundary_top = 610
-            self.enemy_list.append(enemy2)
-
-            enemy3 = Enemy1()
-            enemy3.center_x = 5000
-            enemy3.center_y = 768
-            enemy3.change_x = ENEMY_MOVEMENT_SPEED
-            enemy3.boundary_right = 5314
-            enemy3.boundary_left = 4674
-            enemy3.boundary_top = 860
-            self.enemy_list.append(enemy3)
-
-            enemy4 = Enemy1()
-            enemy4.center_x = 6500
+            enemy4.center_x = 3700
             enemy4.center_y = 384
             enemy4.change_x = ENEMY_MOVEMENT_SPEED
-            enemy4.boundary_right = 6936
-            enemy4.boundary_left = 6120
-            enemy4.boundary_top = 480
+            enemy4.boundary_right = 4100
+            enemy4.boundary_left = 3640
+            enemy4.boundary_top = 450
             self.enemy_list.append(enemy4)
 
             enemy5 = Enemy1()
-            enemy5.center_x = 6700
-            enemy5.center_y = 384
-            enemy5.change_x = 2.2
-            enemy5.boundary_right = 6936
-            enemy5.boundary_left = 6120
-            enemy5.boundary_top = 480
+            enemy5.center_x = 6300
+            enemy5.center_y = 960
+            enemy5.change_x = ENEMY_MOVEMENT_SPEED
+            enemy5.boundary_right = 6772
+            enemy5.boundary_left = 5942
+            enemy5.boundary_top = 1060
             self.enemy_list.append(enemy5)
 
             enemy6 = Enemy1()
-            enemy6.center_x = 8000
-            enemy6.center_y = 1472
+            enemy6.center_x = 7400
+            enemy6.center_y = 1792
             enemy6.change_x = ENEMY_MOVEMENT_SPEED
-            enemy6.boundary_right = 8828
-            enemy6.boundary_left = 7628
-            enemy6.boundary_top = 1600
+            enemy6.boundary_right = 7640
+            enemy6.boundary_left = 7000
+            enemy6.boundary_top = 1890
             self.enemy_list.append(enemy6)
+
+            enemy7 = Enemy1()
+            enemy7.center_x = 6000
+            enemy7.center_y = 2304
+            enemy7.change_x = ENEMY_MOVEMENT_SPEED
+            enemy7.boundary_right = 7042
+            enemy7.boundary_left = 6309
+            enemy7.boundary_top = 2400
+            self.enemy_list.append(enemy7)
+
+            enemy8 = Enemy1()
+            enemy8.center_x = 10000
+            enemy8.center_y = 576
+            enemy8.change_x = ENEMY_MOVEMENT_SPEED
+            enemy8.boundary_right = 10448
+            enemy8.boundary_left = 9498
+            enemy8.boundary_top = 670
+            self.enemy_list.append(enemy8)
+
+        if self.current_level == 3:
+
+            enemy9 = Enemy1()
+            enemy9.center_x = 1000
+            enemy9.center_y = 512
+            enemy9.change_x = ENEMY_MOVEMENT_SPEED
+            enemy9.boundary_right = 1220
+            enemy9.boundary_left = 830
+            enemy9.boundary_top = 610
+            self.enemy_list.append(enemy9)
+
+            enemy10 = Enemy1()
+            enemy10.center_x = 3000
+            enemy10.center_y = 512
+            enemy10.change_x = ENEMY_MOVEMENT_SPEED
+            enemy10.boundary_right = 3474
+            enemy10.boundary_left = 2964
+            enemy10.boundary_top = 610
+            self.enemy_list.append(enemy10)
+
+            enemy11 = Enemy1()
+            enemy11.center_x = 5000
+            enemy11.center_y = 768
+            enemy11.change_x = ENEMY_MOVEMENT_SPEED
+            enemy11.boundary_right = 5314
+            enemy11.boundary_left = 4674
+            enemy11.boundary_top = 860
+            self.enemy_list.append(enemy11)
+
+            enemy12 = Enemy1()
+            enemy12.center_x = 6500
+            enemy12.center_y = 384
+            enemy12.change_x = ENEMY_MOVEMENT_SPEED
+            enemy12.boundary_right = 6936
+            enemy12.boundary_left = 6120
+            enemy12.boundary_top = 480
+            self.enemy_list.append(enemy12)
+
+            enemy13 = Enemy1()
+            enemy13.center_x = 6700
+            enemy13.center_y = 384
+            enemy13.change_x = 2.2
+            enemy13.boundary_right = 6936
+            enemy13.boundary_left = 6120
+            enemy13.boundary_top = 480
+            self.enemy_list.append(enemy13)
+
+            enemy14 = Enemy1()
+            enemy14.center_x = 8000
+            enemy14.center_y = 1472
+            enemy14.change_x = ENEMY_MOVEMENT_SPEED
+            enemy14.boundary_right = 8828
+            enemy14.boundary_left = 7628
+            enemy14.boundary_top = 1600
+            self.enemy_list.append(enemy14)
 
             boss = Boss()
             boss.center_x = 14000
@@ -551,8 +551,8 @@ class GameView(arcade.View):
         self.enemy_list.update_animation()
         self.time_since_last_firing += delta_time
         for enemy in self.enemy_list:
-            if arcade.check_for_collision_with_list(enemy, self.wall_list):
-                enemy.change_x *= -1
+            #if arcade.check_for_collision_with_list(enemy, self.wall_list):
+                #enemy.change_x *= -1
             if (
                 enemy.center_x < enemy.boundary_left
                 or enemy.center_x > enemy.boundary_right
@@ -561,7 +561,7 @@ class GameView(arcade.View):
             if (
                 self.player.center_x <= enemy.boundary_right
                 and self.player.center_x >= enemy.boundary_left
-                and self.player.center_y < enemy.boundary_top
+                and self.player.center_y <= enemy.boundary_top
             ):
                 if self.player.center_x > enemy.center_x:
                     enemy.change_x = 2
@@ -589,7 +589,6 @@ class GameView(arcade.View):
                         self.time_since_last_firing = 0
 
                     self.enemy_bullet_list.append(bullet)
-                    print(self.time_since_last_firing)
         if self.current_level == 3:
             if self.player.center_x >= 12000:
                 self.enemiy_health = MAX_BOSS_HEALLTH
@@ -598,32 +597,32 @@ class GameView(arcade.View):
             touching = arcade.check_for_collision_with_list(bullet, self.enemy_list)
 
             for b in touching:
-                bullet.remove_from_sprite_lists()
+                bullet.kill()
 
             for enemy in touching:
 
                 self.enemiy_health -= BULLET_DAMAGE
 
                 if self.enemiy_health == 0:
-                    enemy.remove_from_sprite_lists()
+                    enemy.kill()
                     self.enemiy_health = MAX_ENEMY_HEALTH
 
         for bullet in self.enemy_bullet_list:
             touching = arcade.check_for_collision(bullet, self.player)
             if touching:
-                bullet.remove_from_sprite_lists()
+                bullet.kill()
                 self.player_health -= BULLET_DAMAGE
                 print(BULLET_DAMAGE, self.player_health)
 
         for bullet in self.enemy_bullet_list:
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
-                bullet.remove_from_sprite_lists()
+                bullet.kill()
 
             if bullet.center_x > self.player.center_x + WIDTH:
-                bullet.remove_from_sprite_lists()
+                bullet.kill()
             if bullet.center_x < self.player.center_x - WIDTH:
-                bullet.remove_from_sprite_lists()
+                bullet.kill()
 
         self.enemy_bullet_list.update()
 
@@ -639,12 +638,12 @@ class GameView(arcade.View):
         for bullet in self.bullet_list:
             touching = arcade.check_for_collision_with_list(bullet, self.wall_list)
             for b in touching:
-                bullet.remove_from_sprite_lists()
+                bullet.kill()
 
             if bullet.center_x > self.player.center_x + WIDTH:
-                bullet.remove_from_sprite_lists()
+                bullet.kill()
             if bullet.center_x < self.player.center_x - WIDTH:
-                bullet.remove_from_sprite_lists()
+                bullet.kill()
 
         health_hit_list = arcade.check_for_collision_with_list(
             self.player, self.health_pickup_list
@@ -657,7 +656,7 @@ class GameView(arcade.View):
             self.player, self.bullet_pickup_list
         )
         for bullet in bullet_hit_list:
-            bullet.remove_from_sprite_lists()
+            bullet.kill()
             self.bullet_amount += BULLET_AMOUNT
 
         if self.current_level == 3:
@@ -665,7 +664,7 @@ class GameView(arcade.View):
                 self.player, self.gem_pickup_list
             )
             for gem in gem_hit:
-                gem.remove_from_sprite_lists
+                gem.kill()
 
         # scrolling for main character
         left_boundary = self.view_left + VIEWPORT_MARGIN
