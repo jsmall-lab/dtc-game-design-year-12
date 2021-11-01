@@ -390,7 +390,7 @@ class GameView(arcade.View):
 
             enemy1 = Enemy1()
             enemy1.center_x = 1000
-            enemy1.center_y = 512
+            enemy1.center_y = 514
             enemy1.change_x = ENEMY_MOVEMENT_SPEED
             enemy1.boundary_right = 1220
             enemy1.boundary_left = 830
@@ -550,9 +550,8 @@ class GameView(arcade.View):
         self.enemy_list.update()
         self.enemy_list.update_animation()
         self.time_since_last_firing += delta_time
+        print(self.time_since_last_firing)
         for enemy in self.enemy_list:
-            if arcade.check_for_collision_with_list(enemy, self.wall_list):
-                enemy.change_x *= -1
             if (
                 enemy.center_x < enemy.boundary_left
                 or enemy.center_x > enemy.boundary_right
@@ -579,6 +578,7 @@ class GameView(arcade.View):
                         bullet.center_x = enemy.center_x - 45
                         bullet.center_y = enemy.center_y
                         self.time_since_last_firing = 0.0
+                        
                     else:
                         bullet = arcade.Sprite(
                             "assets/consumables/Bullet-1.png.png", BULLET_SCAILING
@@ -699,7 +699,7 @@ class GameView(arcade.View):
         if self.view_left < 0:
             self.view_left = 0
 
-        if self.player_health == 0:
+        if self.player_health <= 0:
             self.death()
             self.setup()
             self.lives -= 1
