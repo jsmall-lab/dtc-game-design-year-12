@@ -8,8 +8,8 @@ class StartView(arcade.View):
     def on_show(self):
         arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
         arcade.set_viewport(0, WIDTH - 1, 0, HEIGHT - 1)
-        #self.start_song = arcade.load_sound("assets/sounds/start_song.wav")
-       # arcade.play_sound(self.start_song, looping=True)
+        self.start_song = arcade.load_sound("assets/sounds/start_song.wav")
+        self.song = arcade.play_sound(self.start_song, looping=True)
 
 
     def on_draw(self):
@@ -37,3 +37,4 @@ class StartView(arcade.View):
         """If the user presses the mouse button, start the game."""
         if key == arcade.key.ENTER:
             self.window.show_view(self.window.story_view)
+            arcade.stop_sound(self.song)
