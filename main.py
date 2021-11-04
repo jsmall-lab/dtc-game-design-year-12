@@ -7,6 +7,8 @@ from views.game_won_view import GameWon
 from views.level_won_view import LevelWon
 from views.pause_view import Pause
 from views.start_view import StartView
+from views.story_view import StoryView
+from views.controls_view import ControlsView
 
 WIDTH = 1200
 HEIGHT = 800
@@ -23,6 +25,8 @@ class GameWindow(arcade.Window):
         self.game_won = GameWon()
         self.game_failed = GameFailed()
         self.pause_view = Pause()
+        self.story_view = StoryView()
+        self.controls_view = ControlsView()
         self.show_view(self.start_view)
 
 
