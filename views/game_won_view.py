@@ -21,7 +21,7 @@ class GameWon(arcade.View):
         )
 
         arcade.draw_text(
-            "Click to Start Game Again",
+            "Press Enter to Start Game Again",
             WIDTH / 2,
             HEIGHT / 2 - 75,
             arcade.color.BLACK,
@@ -30,7 +30,7 @@ class GameWon(arcade.View):
         )
         arcade.finish_render()
 
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
+    def on_key_press(self, key, _modifiers):
         """If the user presses the mouse button, start the game."""
-        restart = self.window.start_view
-        self.window.show_view(restart)
+        if key == arcade.key.ENTER:
+            self.window.show_view(self.window.start_view)
