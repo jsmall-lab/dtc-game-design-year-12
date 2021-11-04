@@ -21,7 +21,7 @@ class LevelWon(arcade.View):
         )
 
         arcade.draw_text(
-            "Click to play Next Level",
+            "Press Enter to play Next Level",
             WIDTH / 2,
             HEIGHT / 2 - 75,
             arcade.color.BLACK,
@@ -30,8 +30,7 @@ class LevelWon(arcade.View):
         )
         arcade.finish_render()
 
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
+    def on_key_press(self, key, _modifiers):
         """If the user presses the mouse button, start the game."""
-        game_view = self.window.game_view
-        game_view.setup()
-        self.window.show_view(game_view)
+        if key == arcade.key.ENTER:
+            self.window.show_view(self.window.game_view)

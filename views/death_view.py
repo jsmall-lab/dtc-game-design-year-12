@@ -21,7 +21,7 @@ class DeathView(arcade.View):
         )
 
         arcade.draw_text(
-            "Click to Try Again",
+            "Press Enter to Try Again",
             WIDTH / 2,
             HEIGHT / 2 - 75,
             arcade.color.BLACK,
@@ -30,7 +30,7 @@ class DeathView(arcade.View):
         )
         arcade.finish_render()
 
-    def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
-        game_view = self.window.game_view
-        self.window.show_view(game_view)
-        game_view.setup()
+    def on_key_press(self, key, modifiers: int):
+        if key == arcade.key.ENTER:
+            self.window.show_view(self.window.game_view)
+
