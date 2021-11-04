@@ -8,11 +8,14 @@ class StartView(arcade.View):
     def on_show(self):
         arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
         arcade.set_viewport(0, WIDTH - 1, 0, HEIGHT - 1)
+        #self.start_song = arcade.load_sound("assets/sounds/start_song.wav")
+       # arcade.play_sound(self.start_song, looping=True)
+
 
     def on_draw(self):
         arcade.start_render()
         arcade.draw_text(
-            "Start Screen",
+            "The Journey for The Snake Eye Gem",
             WIDTH / 2,
             HEIGHT / 2,
             arcade.color.BLACK,
@@ -21,7 +24,7 @@ class StartView(arcade.View):
         )
 
         arcade.draw_text(
-            "Click to Start",
+            "Press Enter to Start",
             WIDTH / 2,
             HEIGHT / 2 - 75,
             arcade.color.BLACK,
@@ -30,8 +33,7 @@ class StartView(arcade.View):
         )
         arcade.finish_render()
 
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
+    def on_key_press(self, key, _modifiers):
         """If the user presses the mouse button, start the game."""
-        game_view = self.window.game_view
-        game_view.setup()
-        self.window.show_view(game_view)
+        if key == arcade.key.ENTER:
+            self.window.show_view(self.window.story_view)
