@@ -257,7 +257,7 @@ class GameView(arcade.View):
         self.bullet_amount = None
         self.enemy_bullet_list = None
         self.marker_x = None
-        self.current_level = 1
+        self.current_level = 3
         self.enemy_list = None
         self.time_since_last_firing = 0.0
         self.time_between_firing = 0.9
@@ -459,7 +459,7 @@ class GameView(arcade.View):
         for enemy in self.enemy_list:
             if (
                 enemy.center_x < enemy.boundary_left or
-                 enemy.center_x > enemy.boundary_right
+                enemy.center_x > enemy.boundary_right
             ):
                 enemy.change_x *= -1
             if (
@@ -547,14 +547,6 @@ class GameView(arcade.View):
         for bullet in bullet_hit_list:
             bullet.kill()
             self.bullet_amount += BULLET_AMOUNT
-        if self.current_level == 3:
-            gem_hit = arcade.check_for_collision_with_list(
-                self.player, self.gem_pickup_list
-            )
-            for gem in gem_hit:
-                self.window.show_view(self.window.game_won)
-                self.current_level = 1
-
         # changes which part of window is shown
         left_boundary = self.view_left + VIEWPORT_MARGIN
         if self.player.left < left_boundary:
@@ -602,6 +594,15 @@ class GameView(arcade.View):
         if self.player.center_x > self.marker_x:
             self.current_level += 1
             self.window.show_view(self.window.level_won)
+        # finishes game
+        if self.current_level == 3:
+            gem_hit = arcade.check_for_collision_with_list(
+                self.player, self.gem_pickup_list
+            )
+            for gem in gem_hit:
+                self.window.show_view(self.window.game_won)
+                gem.kill()
+                self.current_level = 1
 
     def on_key_press(self, key, modifiers):
         """runs when a key is pressed"""

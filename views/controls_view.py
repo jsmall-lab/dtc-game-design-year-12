@@ -34,5 +34,5 @@ class ControlsView(arcade.View):
 
     def on_key_press(self, key, _modifiers):
         """runs when keys are pressed"""
-        if key == arcade.key.ESC:
+        if key == arcade.key.ESCAPE:
             self.window.show_view(self.window.pause_view)

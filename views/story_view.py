@@ -40,9 +40,9 @@ class StoryView(arcade.View):
         )
 
         arcade.draw_text(
-            " CONTROLS \n UP ARROW = JUMP \n LEFT ARROW = MOVE LEFT \n RIGHT ARROW = MOVE RIGHT \n SPACE = SHOOT",
+            " CONTROLS \n UP ARROW = JUMP \n LEFT ARROW = MOVE LEFT \n RIGHT ARROW = MOVE RIGHT \n SPACE = SHOOT \n ESC = PAUSE",
             10,
-            250,
+            235,
             arcade.color.BLACK,
             font_size=30,
         )
