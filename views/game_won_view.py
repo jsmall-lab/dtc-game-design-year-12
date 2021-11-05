@@ -1,15 +1,19 @@
 import arcade
 
+# window sizes
 WIDTH = 1200
 HEIGHT = 800
 
 
 class GameWon(arcade.View):
+    """view shown when game is won"""
+
     def on_show(self):
         arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
         arcade.set_viewport(0, WIDTH - 1, 0, HEIGHT - 1)
 
     def on_draw(self):
+        """draws text for view"""
         arcade.start_render()
         arcade.draw_text(
             "WELL DONE \n\n You Have Made It\n You Recoverd The Gem For Man Kind",
@@ -31,6 +35,6 @@ class GameWon(arcade.View):
         arcade.finish_render()
 
     def on_key_press(self, key, _modifiers):
-        """If the user presses the mouse button, start the game."""
+        """runs when key is pressed"""
         if key == arcade.key.ENTER:
             self.window.show_view(self.window.start_view)
