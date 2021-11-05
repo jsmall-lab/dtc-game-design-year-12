@@ -458,14 +458,14 @@ class GameView(arcade.View):
         # enemy shooting, and enemy chasing of player
         for enemy in self.enemy_list:
             if (
-                enemy.center_x < enemy.boundary_left
-                or enemy.center_x > enemy.boundary_right
+                enemy.center_x < enemy.boundary_left or
+                 enemy.center_x > enemy.boundary_right
             ):
                 enemy.change_x *= -1
             if (
-                self.player.center_x <= enemy.boundary_right
-                and self.player.center_x >= enemy.boundary_left
-                and self.player.center_y < enemy.boundary_top
+                self.player.center_x <= enemy.boundary_right and
+                self.player.center_x >= enemy.boundary_left and
+                self.player.center_y < enemy.boundary_top
             ):
                 if self.player.center_x > enemy.center_x:
                     enemy.change_x = 2
@@ -598,6 +598,7 @@ class GameView(arcade.View):
             self.game_failed()
             self.current_level = 1
 
+        # runs when player touches marker tile, progresses to next level
         if self.player.center_x > self.marker_x:
             self.current_level += 1
             self.window.show_view(self.window.level_won)

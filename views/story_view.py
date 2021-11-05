@@ -18,8 +18,21 @@ class StoryView(arcade.View):
     def on_draw(self):
         """draws text for view"""
         arcade.start_render()
+        story_string = (
+            "The United States Army\n This Confidentail Information\n"
+            "Dear H.Gatsby\n"
+            "We here by order you to journey to peru to recover the mistical\n"
+            "Snake Eye Gem.\n"
+            "This is the upmost importance for Cornal Gebidia is in\n"
+            "search for this Gem aswell and from recent intel,\n"
+            "We believe he on his way to the temple where the gem is kept.\n"
+            "if he gets his hands on it, it could turn the war in his favour\n"
+            "for it is rumured that the gem has supernatural powers of unknown origin\n"
+            "You are the only one.\n"
+            "15/10/1942"
+        )
         arcade.draw_text(
-            "The United States Army\n This Confidentail Information\n Dear H.Gatsby \n We here by order you to journey to peru to recover the mistical \n Snake Eye Gem. \n This is the upmost importance for Cornal Gebidia is in \n search for this Gem aswell and from recent intel, \n We believe he on his way to the temple where the gem is kept.\n if he gets his hands on it, it could turn the war in his favour \n for it is rumured that the gem has supernatural powers of unknown origin\n You are the only one.\n 15/10/1942",
+            story_string,
             10,
             428,
             arcade.color.BLACK,
